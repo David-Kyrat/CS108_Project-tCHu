@@ -11,14 +11,11 @@ out/**/*
 
 # Scripts and config Files
 scripts
-*.ps1
-*.sh
 *.iml
 .idea/
 idea/**/
 .idea
 CS108_Project-tCHu.iml
-
 
 # Log and annotations Files
 *.log
