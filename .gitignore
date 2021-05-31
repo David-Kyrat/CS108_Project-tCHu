@@ -1,0 +1,34 @@
+# create by https://github.com/iamcco/coc-gitignore (Sun Apr 25 2021 18:08:32 GMT+0200 (Central European Summer Time))
+# Java.gitignore:
+
+# Specific Files
+TestTripsFromTicketText.txt
+asd
+# Compiled class and config Files
+*.class
+out/
+out/**/*
+
+# Scripts and config Files
+scripts
+*.ps1
+*.sh
+*.iml
+.idea/
+idea/**/
+.idea
+CS108_Project-tCHu.iml
+
+
+# Log and annotations Files
+*.log
+ch\epfl\tchu\game\annotations.xml
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar

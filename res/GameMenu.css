@@ -1,0 +1,61 @@
+.subroot {
+    -fx-padding: 70 0 0 0;
+}
+
+.acceptBox {
+    -fx-padding: -60 30 0 0;
+}
+
+.pendingBgEmpty{
+    -fx-background-color: transparent;
+}
+
+.playText {
+    -fx-font-family: Niconne;
+    -fx-fill: rgb(255, 255, 255);
+    -fx-fill-width: 2;
+    -fx-stroke-width: 1;
+    -fx-font-size: 55;
+    -fx-font-weight: bold;
+}
+
+.picked, .notPicked, .playerNb {
+    -fx-font-family: Fondamento;
+    -fx-font-size: 90;
+    -fx-font-weight: bolder;
+}
+
+.noUnderline {
+    -fx-border-color: transparent !important;
+}
+
+.picked {
+    -fx-underline: true;
+}
+
+.textWait {
+    -fx-font-family: Niconne;
+    -fx-underline: true;
+    -fx-font-size: 45;
+    -fx-fill: CYAN;
+    -fx-fill-width: 2;
+    -fx-stroke-width: 1;
+    -fx-alignment: center;
+}
+
+.text-field {
+    -fx-prompt-text-fill: gray;
+}
+
+.text-field .text {
+    -fx-effect: dropshadow( two-pass-box , blue , .5, 10 , 1 , 1);
+}
+
+.text-field:empty .text {
+    -fx-effect: null ;
+}
+
+.notPicked {
+    -fx-font-size: 80;
+    -fx-font-weight: bolder;
+}

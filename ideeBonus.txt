@@ -1,0 +1,13 @@
+0. FAIRE UNSELECT 0. FAIRE UNSELECT !!
+1. Rendre ENTER ok pour select choisir
+global scene
+
+
+1. Rajouter des Sons
+2. Resume une partie à partir d'un State que tu lui donne (faut juste lui donner un GameState non ?)
+3. Resize correctement bordel de merde
+4. Mettre un Tick à côté de TIckets validés
+5. mettre text dans un scrollPane
+6. WinScreen
+
+

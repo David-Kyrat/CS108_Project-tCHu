@@ -1,0 +1,65 @@
+.boxCy {
+    -fx-border-color: cyan;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxR {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxP {
+    -fx-border-color: pink;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxG {
+    -fx-border-color: green;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxW {
+    -fx-border-color: white;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxR {
+    -fx-border-color: Red;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxB {
+    -fx-border-color: Black;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxBl {
+    -fx-border-color: DodgerBlue;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxV {
+    -fx-border-color: violet;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxC {
+    -fx-border-color: cyan;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+.boxY {
+    -fx-border-color: yellow;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
