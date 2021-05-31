@@ -75,7 +75,7 @@ public class GameMenu /*extends Application*/ {
     /** Blue, Yellow/White, Red, Green */
 
     private final float shadowSpread = 0.5f;
-    private String[] hostArgs = new String[2];
+    private String[] hostArgs = new String[3];
     private String[] clientArgs = new String[2];
     private Stage configStage;
     private Stage coPendingStage;
@@ -160,10 +160,13 @@ public class GameMenu /*extends Application*/ {
         Button chooseBtn = new Button("choose");
         TextField field1 = new TextField();
         TextField field2 = new TextField();
+        TextField field3 = new TextField();
+
         chooseBtn.setOnAction(event -> {
             configStage.close();
             inputFieldValuesToAssign[0] = field1.getText();
             inputFieldValuesToAssign[1] = field2.getText();
+            if (playerChoice == Choice.HOST) inputFieldValuesToAssign[2] = field3.getText();
             isGameConfigured = true;
             try {
                 mainButtonAction(primaryStage);
@@ -183,33 +186,44 @@ public class GameMenu /*extends Application*/ {
         String nameField2PromptText = playerChoice == Choice.CLIENT ? promptMessages[0] : promptMessages[1];
         field1.setPromptText(nameField1PromptText);
         field2.setPromptText(nameField2PromptText);
+        field3.setPromptText("PORT");
 
         PseudoClass empty = PseudoClass.getPseudoClass("empty");
         field1.pseudoClassStateChanged(empty, true);
         field1.textProperty().addListener((obs, oldText, newText) -> field1.pseudoClassStateChanged(empty, newText.isEmpty()));
-        //
-        //   chooseBtn.e
-        VBox buttonBox = setUpNewVBox(0, CENTER, true);
-        VBox modalRoot = new VBox(text, withChildren(buttonBox, field1, field2),
-                                  withChildren(setUpNewHBox(30, TOP_CENTER, true), reselectButton, chooseBtn));
+        field2.pseudoClassStateChanged(empty, true);
+        field2.textProperty().addListener((obs, oldText, newText) -> field1.pseudoClassStateChanged(empty, newText.isEmpty()));
+        field3.pseudoClassStateChanged(empty, true);
+        field3.textProperty().addListener((obs, oldText, newText) -> field1.pseudoClassStateChanged(empty, newText.isEmpty()));
 
-        buttonBox.spacingProperty().bind(configStage.heightProperty().divide(6));
+        VBox buttonBox = setUpNewVBox(0, CENTER, true);
+        List<TextField> fields = playerChoice == Choice.HOST ? List.of(field1, field2, field3) : List.of(field1, field2);
+
+        VBox modalRoot = new VBox(text, withChildren(buttonBox, fields),
+                                  withChildren(setUpNewHBox(30, TOP_CENTER, true), reselectButton, chooseBtn));
+    //    modalRoot.setPadding(new Insets(-200, 0, -200, 0));
+        buttonBox.spacingProperty().bind(configStage.heightProperty().divide(13));
+        buttonBox.getStyleClass().add("buttonBoxGameMenu");
+
         //  modalRoot.getStyleClass().add("boxR");
 
         field1.minWidthProperty().bind(configStage.widthProperty().subtract(30));
         field2.minWidthProperty().bind(configStage.widthProperty().subtract(30));
+        field3.minWidthProperty().bind(configStage.widthProperty().subtract(30));
 
         field1.minHeightProperty().bind(configStage.heightProperty().divide(9));
         field2.minHeightProperty().bind(configStage.heightProperty().divide(9));
+        field3.minHeightProperty().bind(configStage.heightProperty().divide(9));
 
 
         Scene modalScene = new Scene(new StackPane(createBackground(configStage, imgPath("1_4.jpg")), modalRoot),
-                                     primaryStage.getWidth() / 3, primaryStage.getHeight() / 3);
+                                     primaryStage.getWidth() / 2.7, primaryStage.getHeight() / 2.3);
         //  modalScene.getStylesheets().add("debug.css");
         modalScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) chooseBtn.getOnAction().handle(new ActionEvent());
         });
         modalScene.getStylesheets().add(CHOOSER_CSS);
+
         setShow(configStage, modalScene);
         chooseBtn.requestFocus();
         this.configStage = configStage;
@@ -348,7 +362,8 @@ public class GameMenu /*extends Application*/ {
         if (playerChoice == Choice.HOST) {
 
             if (isGameConfigured && isPlayerChosenProperty.get()) {
-                ServerMain serverMain = new ServerMain(hostArgs[0], hostArgs[1]);
+                ServerMain serverMain = new ServerMain(hostArgs[0], hostArgs[1], hostArgs[2]);
+                System.out.println(Arrays.toString(hostArgs));
                 connectionPending(primaryStage);
                 Platform.runLater(() -> {
                     try {
@@ -369,6 +384,7 @@ public class GameMenu /*extends Application*/ {
                                      configStage.close();
                                      hostArgs[0] = null;
                                      hostArgs[1] = null;
+                                     hostArgs[2] = null;
                                  }, new String[]{"Your Name", "Opponent's Name"});
             }
         }
@@ -383,7 +399,7 @@ public class GameMenu /*extends Application*/ {
             }
             else if (isPlayerChosenProperty.get()) {
                 setUpConfigStage(primaryStage, "Menu - Client Configuration", "Enter ProxyName and Port",
-                                 hostArgs,
+                                 clientArgs,
                                  (configStage, reSelectEvent) -> {
                                      clientArgs[0] = null;
                                      clientArgs[1] = null;

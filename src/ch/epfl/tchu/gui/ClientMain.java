@@ -14,7 +14,7 @@ import static java.lang.Integer.*;
 public final class ClientMain extends Application {
 
     private final static String DEFAULT_PROXY_NAME = "localhost";
-    private final static int DEFAULT_PORT = 5108;
+    final static int DEFAULT_PORT = 5108;
     private String proxyName;
     private int port;
 

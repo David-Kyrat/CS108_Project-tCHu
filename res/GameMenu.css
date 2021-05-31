@@ -43,6 +43,10 @@
     -fx-alignment: center;
 }
 
+.buttonBoxGameMenu {
+    -fx-padding: -50 0 -50 0;
+}
+
 .text-field {
     -fx-prompt-text-fill: gray;
 }

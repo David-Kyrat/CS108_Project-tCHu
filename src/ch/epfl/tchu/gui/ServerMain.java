@@ -10,7 +10,9 @@ import java.net.*;
 import java.util.*;
 
 import static ch.epfl.tchu.game.PlayerId.*;
+import static ch.epfl.tchu.gui.ClientMain.DEFAULT_PORT;
 import static ch.epfl.tchu.gui.ConstantsGUI.*;
+import static java.lang.Integer.parseInt;
 
 /**
  * This class contains the main program of the server
@@ -26,31 +28,30 @@ public final class ServerMain extends Application {
      * @param player1Name Name of player1
      * @param player2Name Name of player2
      */
-    public ServerMain(String player1Name, String player2Name) {
+    public ServerMain(String player1Name, String player2Name, String port) {
         System.out.println("instance of ServerMain created");
         String checkedPlayer1Name = player1Name.isBlank() ? ADA : player1Name;
         String checkPlayer2Name = player2Name.isBlank() ? CHARLES : player2Name;
-        this.args = new String[]{checkedPlayer1Name, checkPlayer2Name};
+        String checkPort = port.isBlank() ? String.valueOf(DEFAULT_PORT) : port;
+        this.args = new String[]{checkedPlayer1Name, checkPlayer2Name, checkPort};
     }
 
     /**
      * Secondary constructor of ServerMain that'll use the default names
      */
-    public ServerMain() {
-        this("", "");
-    }
+    public ServerMain() {this("", "", "");}
 
     public static void main(String[] args) {launch(args);}
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Start method Called");
-        if ((args[0].isBlank() && args[1].isBlank()) || this.args.length == 0 || this.args == null) {
+        if (this.args.length == 0 || args[0].isBlank() && args[1].isBlank() || args[2].isBlank()) {
             ServerMain serverMain = new ServerMain();
             serverMain.start(primaryStage);
             return;
         }
-        RemotePlayerProxy remotePlayer = new RemotePlayerProxy(new ServerSocket(5108).accept());
+        RemotePlayerProxy remotePlayer = new RemotePlayerProxy(new ServerSocket(parseInt(args[2])).accept());
         System.out.println("Server initialized");
         //By convention PLAYER_1 is hostPlayer and PLAYER_2 is remotePlayer
         new Thread(() -> {
