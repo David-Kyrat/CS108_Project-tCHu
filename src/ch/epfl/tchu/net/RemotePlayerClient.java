@@ -57,10 +57,16 @@ public final class RemotePlayerClient {
 
             String message;
             String[] infos;
-
+            System.out.println("socket and reader/writer initialized, before loop");
+            message = reader.readLine();
+            while (message == null) {
+                message = reader.readLine();
+            }
             while ((message = reader.readLine()) != null) {
                 infos = message.split(Pattern.quote(" "), -1);
 
+                System.out.println("inside loop");
+                System.out.println(MessageId.valueOf(infos[0]));
                 switch (MessageId.valueOf(infos[0])) {
                     case INIT_PLAYERS:
                         PlayerId id = ID_SERDE.deserialize(infos[1]);

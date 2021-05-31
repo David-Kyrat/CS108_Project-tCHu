@@ -14,7 +14,7 @@ import static java.lang.Integer.*;
 public final class ClientMain extends Application {
 
     private final static String DEFAULT_PROXY_NAME = "localhost";
-    final static int DEFAULT_PORT = 5108;
+    final static int LOCALHOST_PORT = 5108;
     private String proxyName;
     private int port;
 
@@ -26,7 +26,7 @@ public final class ClientMain extends Application {
      */
     public ClientMain(String proxyName, String port) {
         this.proxyName = proxyName == null || proxyName.isBlank() ? DEFAULT_PROXY_NAME : proxyName;
-        this.port = port == null || port.isBlank() ? DEFAULT_PORT : parseInt(port);
+        this.port = port == null || port.isBlank() ? LOCALHOST_PORT : parseInt(port);
     }
 
     /**
@@ -42,7 +42,9 @@ public final class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (proxyName == null || port == 0) new ClientMain().start(primaryStage);
 
-        RemotePlayerClient client = new RemotePlayerClient(new GraphicalPlayerAdapter().setStage(primaryStage), proxyName, port);
+        GraphicalPlayerAdapter gpa = new GraphicalPlayerAdapter().setStage(primaryStage);
+        RemotePlayerClient client = new RemotePlayerClient(gpa, proxyName, port);
+
         new Thread(client::run).start();
     }
 }

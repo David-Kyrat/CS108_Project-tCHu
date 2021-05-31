@@ -33,6 +33,7 @@ public final class GraphicalPlayerAdapter implements Player {
 
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
+        System.out.println("init players and creates graphical players");
         runLater(() -> graphicalPlayer = stage == null ? new GraphicalPlayer(ownId, playerNames)
                                                        : new GraphicalPlayer(ownId, playerNames, stage));
     }
