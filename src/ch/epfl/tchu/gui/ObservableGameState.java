@@ -48,8 +48,8 @@ public final class ObservableGameState {
     Properties concerning the hidden state of the player corresponding to this instance of ObservableGameState
     ==========================================================================================================
      */
-    //private final ObservableList<Ticket> tickets = FXCollections.observableArrayList();
-    private final ObservableMap<Ticket, Integer> tickets = FXCollections.observableHashMap();
+    private final ObservableList<Ticket> tickets = FXCollections.observableArrayList();
+    private final ObservableList<String> ticketsValues = FXCollections.observableArrayList();
 
     private final Map<Card, IntegerProperty> colorCardCount = new HashMap<>();
     private final Map<Route, BooleanProperty> isRouteClaimable = new HashMap<>();
@@ -113,32 +113,32 @@ public final class ObservableGameState {
             PublicPlayerState playerState = newGameState.playerState(id);
 
             ticketCounts.get(id.ordinal())
-                        .set(playerState.ticketCount());
+                    .set(playerState.ticketCount());
 
             cardCounts.get(id.ordinal())
-                      .set(playerState.cardCount());
+                    .set(playerState.cardCount());
 
             carCounts.get(id.ordinal())
-                     .set(playerState.carCount());
+                    .set(playerState.carCount());
 
             claimPoints.get(id.ordinal())
-                       .set(playerState.claimPoints());
+                    .set(playerState.claimPoints());
         }
 
-        tickets.clear();
-        tickets.putAll(newPlayerState.ticketsValue());
+        tickets.setAll(newPlayerState.tickets().toList());
+        ticketsValues.setAll(newPlayerState.ticketsValue());
 
         colorCardCount.forEach((card, property) -> property.set(newPlayerState.cards().countOf(card)));
 
         isRouteClaimable.forEach((route, property) -> {
             final boolean isRouteClaimed = newGameState.claimedRoutes()
-                                                       .stream()
-                                                       .anyMatch(claimedRoute -> route.station1() == claimedRoute.station1() &&
-                                                                                 route.station2() == claimedRoute.station2());
+                    .stream()
+                    .anyMatch(claimedRoute -> route.station1() == claimedRoute.station1() &&
+                            route.station2() == claimedRoute.station2());
 
             property.set(!isRouteClaimed &&
-                         playerId.equals(newGameState.currentPlayerId()) &&
-                         newPlayerState.canClaimRoute(route));
+                    playerId.equals(newGameState.currentPlayerId()) &&
+                    newPlayerState.canClaimRoute(route));
         });
     }
 
@@ -214,11 +214,19 @@ public final class ObservableGameState {
     }
 
     /**
+     * Getter for the ObservableMap of tickets owned by the player to whom this is corresponding to and the number of points they give
+     * @return an unmodifiableObservableMap of the tickets and the number of points they give
+     */
+    public ObservableList<String> ticketsValuesProperty() {
+        return FXCollections.unmodifiableObservableList(ticketsValues);
+    }
+
+    /**
      * Getter for the ObservableList of tickets owned by the player to whom this is corresponding to
      * @return an unmodifiableObservableList of the tickets
      */
-    public ObservableMap<Ticket, Integer> ticketsProperty() {
-        return FXCollections.unmodifiableObservableMap(tickets);
+    public ObservableList<Ticket> ticketsProperty() {
+        return FXCollections.unmodifiableObservableList(tickets);
     }
 
     /**

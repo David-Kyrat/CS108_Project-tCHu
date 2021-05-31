@@ -49,42 +49,32 @@ final class DecksViewCreator {
         HBox handView = new HBox();
         handView.getStylesheets().addAll(DECKS_CSS, COLORS_CSS);
 
-        //ListView<Ticket> ticketsView = new ListView<>(gameState.ticketsProperty());
-        List<String> tickets = gameState
-                .ticketsProperty()
-                .entrySet()
-                .stream()
-                .map(entry -> String.format("%s vaut : %dd  -  %s", entry.getKey(), entry.getValue(),
-                                            entry.getValue() > 0 ? "✅" : "❌"))
-                .peek(System.out::println)
-                .collect(Collectors.toUnmodifiableList());
-
-        ListView<String> ticketsView = new ListView<>(FXCollections.observableList(tickets));
+        ListView<String> ticketsView = new ListView<>(gameState.ticketsValuesProperty());
         ticketsView.setId("tickets");
 
         HBox handBox = new HBox();
         handBox.setId("hand-pane");
 
         List<StackPane> cardsList = Card.ALL.stream()
-                                            .map(card -> {
-                                                StackPane stackPane = withClass(new StackPane(), colorClass(card.color()), CARD_CLASS);
+                .map(card -> {
+                    StackPane stackPane = withClass(new StackPane(), colorClass(card.color()), CARD_CLASS);
 
-                                                Text countText = withClass(new Text(), COUNT_CLASS);
-                                                countText.textProperty().bind(Bindings.convert(gameState.colorCardCountProperty(card)));
+                    Text countText = withClass(new Text(), COUNT_CLASS);
+                    countText.textProperty().bind(Bindings.convert(gameState.colorCardCountProperty(card)));
 
-                                                withChildren(stackPane, withClass(new Rectangle(EXT_RECT_WIDTH, EXT_RECT_HEIGHT), OUTSIDE_CLASS),
-                                                             withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), FILLED_CLASS, INSIDE_CLASS),
-                                                             withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), TRAIN_IMAGE_CLASS),
-                                                             countText);
+                    withChildren(stackPane, withClass(new Rectangle(EXT_RECT_WIDTH, EXT_RECT_HEIGHT), OUTSIDE_CLASS),
+                            withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), FILLED_CLASS, INSIDE_CLASS),
+                            withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), TRAIN_IMAGE_CLASS),
+                            countText);
 
-                                                stackPane.visibleProperty()
-                                                         .bind(Bindings.greaterThan(gameState.colorCardCountProperty(card), 0));
-                                                countText.visibleProperty()
-                                                         .bind(Bindings.greaterThan(gameState.colorCardCountProperty(card), 1));
+                    stackPane.visibleProperty()
+                            .bind(Bindings.greaterThan(gameState.colorCardCountProperty(card), 0));
+                    countText.visibleProperty()
+                            .bind(Bindings.greaterThan(gameState.colorCardCountProperty(card), 1));
 
-                                                return stackPane;
-                                            })
-                                            .collect(Collectors.toUnmodifiableList());
+                    return stackPane;
+                })
+                .collect(Collectors.toUnmodifiableList());
 
         withChildren(handBox, cardsList);
 
@@ -115,21 +105,21 @@ final class DecksViewCreator {
         ticketDeck.disableProperty().bind(
                 ticketDrawHandler.isNull());
         ticketDeck.onMouseClickedProperty()
-                  .set(mouseEvent -> ticketDrawHandler.get().onDrawTickets());
+                .set(mouseEvent -> ticketDrawHandler.get().onDrawTickets());
 
         withChildren(cardsView, ticketDeck);
-//TODO: check if remove null changes something
+
         List<StackPane> cardsList = FACE_UP_CARD_SLOTS
                 .stream()
                 .map(slot -> {
                     StackPane stackPane = withClass(new StackPane(), null, CARD_CLASS);
                     gameState.faceUpCardProperty(slot)
-                             .addListener((property, oldValue, newValue) -> stackPane.getStyleClass()
-                                                                                     .set(0, ConstantsGUI.colorClass(newValue.color())));
+                            .addListener((property, oldValue, newValue) -> stackPane.getStyleClass()
+                                    .set(0, ConstantsGUI.colorClass(newValue.color())));
 
                     withChildren(stackPane, withClass(new Rectangle(EXT_RECT_WIDTH, EXT_RECT_HEIGHT), OUTSIDE_CLASS),
-                                 withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), FILLED_CLASS, INSIDE_CLASS),
-                                 withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), TRAIN_IMAGE_CLASS));
+                            withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), FILLED_CLASS, INSIDE_CLASS),
+                            withClass(new Rectangle(INT_RECT_WIDTH, INT_RECT_HEIGHT), TRAIN_IMAGE_CLASS));
 
                     stackPane.disableProperty().bind(
                             cardDrawHandler.isNull());
@@ -157,7 +147,7 @@ final class DecksViewCreator {
                 property.multiply(GAUGE_WIDTH).divide(100));
 
         Group group = new Group(withClass(new Rectangle(GAUGE_WIDTH, GAUGE_HEIGHT), BACKGROUND_CLASS),
-                                foreground);
+                foreground);
 
         Button button = withClass(new Button(label), GAUGED_CLASS);
         button.setGraphic(group);
