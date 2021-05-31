@@ -7,6 +7,8 @@ import java.util.stream.*;
 
 import static ch.epfl.tchu.game.Card.*;
 import static ch.epfl.tchu.game.Constants.*;
+import static ch.epfl.tchu.gui.StringsFr.EN_DASH_SEPARATOR;
+import static ch.epfl.tchu.gui.StringsFr.plural;
 
 /**
  * Immutable representation of the complete state of a Player
@@ -16,7 +18,7 @@ public final class PlayerState extends PublicPlayerState {
 
     private final SortedBag<Ticket> tickets;
     private final SortedBag<Card> cards;
-    private final Map<Ticket, Integer> ticketsValue;
+    private final List<String> ticketsValue;
 
     /**
      * Unique constructor of instances of the Class PlayerState
@@ -29,7 +31,7 @@ public final class PlayerState extends PublicPlayerState {
         super(tickets.size(), cards.size(), routes);
         this.tickets = tickets;
         this.cards = cards;
-        this.ticketsValue = new HashMap<>();
+        this.ticketsValue = new ArrayList<>();
     }
 
     /**
@@ -63,7 +65,7 @@ public final class PlayerState extends PublicPlayerState {
      */
     public boolean canClaimRoute(Route route) {
         return hasEnoughCarsToClaim(route) && possibleClaimCards(route).stream()
-                                                                       .anyMatch(cards::contains);
+                .anyMatch(cards::contains);
     }
 
     /**
@@ -98,14 +100,14 @@ public final class PlayerState extends PublicPlayerState {
     public List<SortedBag<Card>> possibleAdditionalCards(int additionalCardsCount, SortedBag<Card> initialCards) {
         //Preconditions' check
         Preconditions.checkArgument(1 <= additionalCardsCount &&
-                                    additionalCardsCount <= 3);
+                additionalCardsCount <= 3);
         Preconditions.checkArgument(!initialCards.isEmpty() &&
-                                    initialCards.stream().map(Card::color).distinct().count() <= 2);
+                initialCards.stream().map(Card::color).distinct().count() <= 2);
 
         //Actual computation of what we want
         List<Card> typesOfCardToAdd = cards.difference(initialCards).stream()
-                                           .filter(card -> initialCards.contains(card) || card == LOCOMOTIVE)
-                                           .collect(Collectors.toUnmodifiableList());
+                .filter(card -> initialCards.contains(card) || card == LOCOMOTIVE)
+                .collect(Collectors.toUnmodifiableList());
 
         SortedBag<Card> cardSb = SortedBag.of(typesOfCardToAdd);
 
@@ -114,8 +116,8 @@ public final class PlayerState extends PublicPlayerState {
 
         Set<SortedBag<Card>> setOfOptions = cardSb.subsetsOfSize(additionalCardsCount);
         return setOfOptions.stream()
-                           .sorted(Comparator.comparingInt(cs -> cs.countOf(LOCOMOTIVE)))
-                           .collect(Collectors.toUnmodifiableList());
+                .sorted(Comparator.comparingInt(cs -> cs.countOf(LOCOMOTIVE)))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     /**
@@ -164,9 +166,9 @@ public final class PlayerState extends PublicPlayerState {
      */
     public int ticketPoints() {
         int stationCount = routes().isEmpty() ? 1 : routes().stream()
-                                                            .mapToInt(r -> Math.max(r.station1().id(), r.station2().id()))
-                                                            .max()
-                                                            .getAsInt() + 1;
+                .mapToInt(r -> Math.max(r.station1().id(), r.station2().id()))
+                .max()
+                .getAsInt() + 1;
 
         StationPartition.Builder builder = new StationPartition.Builder(stationCount);
         for (Route r : routes()) builder.connect(r.station1(), r.station2());
@@ -175,19 +177,14 @@ public final class PlayerState extends PublicPlayerState {
 
         return tickets.stream().mapToInt(ticket -> {
             int value = ticket.points(partition);
-            ticketsValue.put(ticket, value);
+            ticketsValue.add(ticket.text() + " : " + value + " point" + plural(value));
             return value;
         }).sum();
     }
 
-    /**
-     * Construct StationPartition etc... calling ticketPoints() and returns
-     * the map containing each ticket associated with its value in point
-     * @return the map containing each ticket associated with its value in point
-     */
-    public Map<Ticket, Integer> ticketsValue() {
+    public List<String> ticketsValue() {
         ticketPoints();
-        return Map.copyOf(ticketsValue);
+        return List.copyOf(ticketsValue);
     }
 
     /**
