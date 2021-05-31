@@ -10,9 +10,8 @@ import java.net.*;
 import java.util.*;
 
 import static ch.epfl.tchu.game.PlayerId.*;
-import static ch.epfl.tchu.gui.ClientMain.LOCALHOST_PORT;
+import static ch.epfl.tchu.gui.ClientMain.*;
 import static ch.epfl.tchu.gui.ConstantsGUI.*;
-import static java.lang.Integer.*;
 
 /**
  * This class contains the main program of the server
@@ -51,9 +50,6 @@ public final class ServerMain extends Application {
         }
         System.out.println("Start method Called");
 
-        System.out.println();
-        int port = parseInt(args[2]);
-        System.out.println("In serverMain port is " + port);
         RemotePlayerProxy remotePlayer = new RemotePlayerProxy(new ServerSocket(LOCALHOST_PORT).accept());
         System.out.println("Server initialized");
 
