@@ -45,12 +45,14 @@ public final class RemotePlayerClient {
      */
     public void run() {
         try {
+            System.out.println("before socket");
             Socket socket = new Socket(proxyName, PROXY_PORT);
+            System.out.println("socket " + socket.getPort() + " " + socket.getInetAddress() + " before reader");
 
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             socket.getInputStream(), US_ASCII));
-
+            System.out.println("before writer");
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(
                             socket.getOutputStream(), US_ASCII));

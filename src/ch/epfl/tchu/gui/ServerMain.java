@@ -48,10 +48,8 @@ public final class ServerMain extends Application {
             serverMain.start(primaryStage);
             return;
         }
-        System.out.println("Start method Called");
 
         RemotePlayerProxy remotePlayer = new RemotePlayerProxy(new ServerSocket(LOCALHOST_PORT).accept());
-        System.out.println("Server initialized");
 
         //By convention PLAYER_1 is hostPlayer and PLAYER_2 is remotePlayer
         new Thread(() -> {

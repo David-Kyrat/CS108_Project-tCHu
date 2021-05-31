@@ -375,6 +375,7 @@ public class GameMenu /*extends Application*/ {
         else {
             if (isGameConfigured && isPlayerChosenProperty.get()) {
                 try {
+                    System.out.println(Arrays.toString(clientArgs));
                     new ClientMain(clientArgs[0], clientArgs[1]).start(primaryStage);
                 }
                 catch (Exception e) {
@@ -383,7 +384,7 @@ public class GameMenu /*extends Application*/ {
             }
             else if (isPlayerChosenProperty.get()) {
                 setUpConfigStage(primaryStage, "Menu - Client Configuration", "Enter ProxyName and Port",
-                                 hostArgs,
+                                 clientArgs,
                                  (configStage, reSelectEvent) -> {
                                      clientArgs[0] = null;
                                      clientArgs[1] = null;
