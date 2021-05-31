@@ -363,7 +363,6 @@ public class GameMenu /*extends Application*/ {
 
             if (isGameConfigured && isPlayerChosenProperty.get()) {
                 ServerMain serverMain = new ServerMain(hostArgs[0], hostArgs[1], hostArgs[2]);
-                System.out.println(Arrays.toString(hostArgs));
                 connectionPending(primaryStage);
                 Platform.runLater(() -> {
                     try {

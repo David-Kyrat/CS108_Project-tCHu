@@ -45,12 +45,13 @@ public final class ServerMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        System.out.println("Start method Called");
         if (this.args.length == 0 || args[0].isBlank() && args[1].isBlank() || args[2].isBlank()) {
             ServerMain serverMain = new ServerMain();
             serverMain.start(primaryStage);
             return;
         }
+        System.out.println("Start method Called");
+
         RemotePlayerProxy remotePlayer = new RemotePlayerProxy(new ServerSocket(parseInt(args[2])).accept());
         System.out.println("Server initialized");
         //By convention PLAYER_1 is hostPlayer and PLAYER_2 is remotePlayer
