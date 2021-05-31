@@ -28,7 +28,6 @@ public final class ServerMain extends Application {
      * @param player2Name Name of player2
      */
     public ServerMain(String player1Name, String player2Name) {
-        System.out.println("instance of ServerMain created");
         String checkedPlayer1Name = player1Name.isBlank() ? ADA : player1Name;
         String checkPlayer2Name = player2Name.isBlank() ? CHARLES : player2Name;
         this.args = new String[]{checkedPlayer1Name, checkPlayer2Name};
@@ -53,7 +52,6 @@ public final class ServerMain extends Application {
 
         //By convention PLAYER_1 is hostPlayer and PLAYER_2 is remotePlayer
         new Thread(() -> {
-            System.out.println("Game Started");
             Game.play(Map.of(PLAYER_1, new GraphicalPlayerAdapter().setStage(primaryStage), PLAYER_2, remotePlayer),
                       Map.of(PLAYER_1, args[0], PLAYER_2, args[1]),
                       SortedBag.of(ChMap.tickets()), new Random());

@@ -3,6 +3,7 @@ package ch.epfl.tchu.gui;
 import ch.epfl.tchu.*;
 import ch.epfl.tchu.game.*;
 import ch.epfl.tchu.gui.ActionHandlers.*;
+import javafx.application.*;
 import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.collections.*;
@@ -78,6 +79,11 @@ public final class GraphicalPlayer {
         this.primaryStage.setTitle("tCHu" + LONG_DASH_SEPARATOR + playerNames.get(id));
         this.modalStage = initModalStage(primaryStage);
         this.primaryStage.setFullScreenExitHint("");
+        primaryStage.setOnCloseRequest(event -> {
+            primaryStage.close();
+            if (modalStage.isShowing()) modalStage.close();
+            Platform.exit();
+        });
         resize(scene, root);
         Nodes.setShowCenter(this.primaryStage, scene, true);
     }
@@ -293,7 +299,6 @@ public final class GraphicalPlayer {
                 //TODO : fix condition
                 button.getOnAction().handle(new ActionEvent());
             }
-            //if (keyEvent.getCode() == KeyCode.ENTER) button.fire();
         });
 
         setShowCenter(modalStage, modalScene);

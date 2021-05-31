@@ -15,7 +15,6 @@ import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * Represents a distant player's client
- *
  * @author Mehdi Bouguerra Ezzina (314857)
  * @author Noah Munz (310779)
  */
@@ -27,7 +26,6 @@ public final class RemotePlayerClient {
 
     /**
      * RemotePlayerClient unique constructor
-     *
      * @param player    the player to whom it must provide remote access
      * @param proxyName a String of the name of the proxy
      * @param proxyPort an int representing the port of the proxy
@@ -45,30 +43,20 @@ public final class RemotePlayerClient {
      */
     public void run() {
         try {
-            System.out.println("before socket");
             Socket socket = new Socket(proxyName, PROXY_PORT);
-            System.out.println("socket " + socket.getPort() + " " + socket.getInetAddress() + " before reader");
-
             BufferedReader reader = new BufferedReader(
                     new InputStreamReader(
                             socket.getInputStream(), US_ASCII));
-            System.out.println("before writer");
             BufferedWriter writer = new BufferedWriter(
                     new OutputStreamWriter(
                             socket.getOutputStream(), US_ASCII));
-
             String message;
             String[] infos;
-            System.out.println("socket and reader/writer initialized, before loop");
-            message = reader.readLine();
-            while (message == null) {
-                message = reader.readLine();
-            }
             while ((message = reader.readLine()) != null) {
                 infos = message.split(Pattern.quote(" "), -1);
-
                 System.out.println("inside loop");
                 System.out.println(MessageId.valueOf(infos[0]));
+
                 switch (MessageId.valueOf(infos[0])) {
                     case INIT_PLAYERS:
                         PlayerId id = ID_SERDE.deserialize(infos[1]);
@@ -127,14 +115,14 @@ public final class RemotePlayerClient {
                         break;
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     /**
      * Method used by the client to send a message
-     *
      * @param args the serialize elements we want to transmit
      */
     private void sendMessage(BufferedWriter writer, String... args) {

@@ -42,9 +42,10 @@ public final class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (proxyName == null || port == 0) new ClientMain().start(primaryStage);
 
-        GraphicalPlayerAdapter gpa = new GraphicalPlayerAdapter().setStage(primaryStage);
-        RemotePlayerClient client = new RemotePlayerClient(gpa, proxyName, port);
-
+        System.out.println("before construction of gpa");
+        GraphicalPlayerAdapter gpa = new GraphicalPlayerAdapter();
+        RemotePlayerClient client = new RemotePlayerClient(gpa.setStage(primaryStage), proxyName, port);
+        System.out.println("after client");
         new Thread(client::run).start();
     }
 }
