@@ -405,7 +405,7 @@ public class GameMenu /*extends Application*/ {
                                      clientArgs[1] = null;
                                      configStage.close();
                                  },
-                                 new String[]{"Proxy Name", "PORT"});
+                                 new String[]{"PORT", "Proxy Name"});
             }
         }
     }
