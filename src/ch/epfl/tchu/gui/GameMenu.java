@@ -224,7 +224,7 @@ public class GameMenu /*extends Application*/ {
         root.getStyleClass().add("pendingBgEmpty");
         String text = "Waiting for";
         String text2 = "Client connection...";
-        double factor = 2.5; String className = "textWait" ;
+        double factor = 2.5; String className = "textWait";
 
         Text connectionPendingText = withClass(new Text(text), className);
         Text connectionPendingText2 = withClass(new Text(text2), className);
@@ -237,7 +237,7 @@ public class GameMenu /*extends Application*/ {
 
         String bgPath = imgPath("1_3.jpg");
         Scene scene = new Scene(new StackPane(createBackground(coPendingStage, bgPath), root),
-                                primaryStage.getWidth()/2.5, primaryStage.getHeight()/3);
+                                primaryStage.getWidth() / 2.5, primaryStage.getHeight() / 3);
         scene.getStylesheets().add("GameMenu.css");
         addDebug(scene);
         root.minWidthProperty().bind(scene.widthProperty());
@@ -247,7 +247,8 @@ public class GameMenu /*extends Application*/ {
 
         setShow(coPendingStage, scene);
     }
-    private ImageView createBackground(Stage stage, String path){
+
+    private ImageView createBackground(Stage stage, String path) {
         //String path = imgPath("1_3.jpg");
         ImageView imageView = new ImageView(path);
         imageView.fitHeightProperty().bind(stage.heightProperty());
@@ -388,10 +389,11 @@ public class GameMenu /*extends Application*/ {
                                      clientArgs[1] = null;
                                      configStage.close();
                                  },
-                                 new String[]{"Proxy Name", "PORT"});
+                                 new String[]{"PORT", "Proxy Name"});
             }
         }
     }
+
     /**
      * Style card to give it a "pushed" effect like a button and trigger the "chosen" boolean
      * @param card Card
