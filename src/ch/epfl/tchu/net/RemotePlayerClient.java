@@ -67,7 +67,9 @@ public final class RemotePlayerClient {
                                                                                 playerId -> playerId,
                                                                                 playerId -> namesList.get(playerId.ordinal())));
 
-                        player.initPlayers(id, playerNames);
+                        Boolean rematch = BOOLEAN_SERDE.deserialize(infos[3]);
+
+                        player.initPlayers(id, playerNames, rematch);
                         break;
 
                     case RECEIVE_INFO:
@@ -113,6 +115,13 @@ public final class RemotePlayerClient {
                         List<SortedBag<Card>> sortedBags = CARD_LISTOF_SB_SERDE.deserialize(infos[1]);
                         sendMessage(writer, CARDS_SB_SERDE.serialize(player.chooseAdditionalCards(sortedBags)));
                         break;
+
+                    case ASK_REMATCH:
+                        player.askForRematch();
+                        break;
+
+                    case REMATCH_ANSWER:
+                        sendMessage(writer, BOOLEAN_SERDE.serialize(player.rematchResponse()));
                 }
             }
         }

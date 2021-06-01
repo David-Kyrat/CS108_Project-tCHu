@@ -45,7 +45,7 @@ public final class RemotePlayerProxy implements Player {
     }
 
     @Override
-    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
+    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch) {
         System.out.println("init players");
         List<String> values = PlayerId.ALL.stream()
                                           .map(playerNames::get)
@@ -54,7 +54,8 @@ public final class RemotePlayerProxy implements Player {
         i.e. we want value for key PLAYER_I to be at the I-th position */
         sendMessage(INIT_PLAYERS.name(),
                     ID_SERDE.serialize(ownId),
-                    STRINGS_SERDE.serialize(values));
+                    STRINGS_SERDE.serialize(values),
+                    BOOLEAN_SERDE.serialize(rematch));
     }
 
     @Override
@@ -114,6 +115,17 @@ public final class RemotePlayerProxy implements Player {
     public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
         sendMessage(CHOOSE_ADDITIONAL_CARDS.name(), CARD_LISTOF_SB_SERDE.serialize(options));
         return CARDS_SB_SERDE.deserialize(response(reader));
+    }
+
+    @Override
+    public void askForRematch() {
+        sendMessage(ASK_REMATCH.name());
+    }
+
+    @Override
+    public Boolean rematchResponse() {
+        sendMessage(REMATCH_ANSWER.name());
+        return BOOLEAN_SERDE.deserialize(response(reader));
     }
 
     /**

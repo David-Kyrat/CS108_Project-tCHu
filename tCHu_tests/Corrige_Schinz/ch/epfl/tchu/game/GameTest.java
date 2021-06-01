@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static ch.epfl.tchu.game.GameTest.PlayerMethod.*;
+//import static ch.epfl.tchu.game.GameTest.PlayerMethod.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+    /*
     enum PlayerMethod {
         INIT_PLAYERS,
         RECEIVE_INFO,
@@ -639,4 +640,6 @@ class GameTest {
             return new Ticket(trips);
         }
     }
+
+     */
 }

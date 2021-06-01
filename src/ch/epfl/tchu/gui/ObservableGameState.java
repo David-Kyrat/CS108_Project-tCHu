@@ -60,6 +60,10 @@ public final class ObservableGameState {
      */
     public ObservableGameState(PlayerId id) {
         playerId = id;
+        reset();
+    }
+
+    public void reset() {
         gameState = null;
         playerState = null;
 
@@ -81,7 +85,6 @@ public final class ObservableGameState {
             claimPoints.add(new SimpleIntegerProperty(0));
         }
     }
-
 
     /**
      * Updates all the properties representing the game.

@@ -18,7 +18,6 @@ public final class PlayerState extends PublicPlayerState {
 
     private final SortedBag<Ticket> tickets;
     private final SortedBag<Card> cards;
-    private final List<String> ticketsValue;
 
     /**
      * Unique constructor of instances of the Class PlayerState
@@ -31,7 +30,6 @@ public final class PlayerState extends PublicPlayerState {
         super(tickets.size(), cards.size(), routes);
         this.tickets = tickets;
         this.cards = cards;
-        this.ticketsValue = new ArrayList<>();
     }
 
     /**
@@ -165,6 +163,20 @@ public final class PlayerState extends PublicPlayerState {
      * @return the number of points (may be negative) obtained by the player thanks to its ticket
      */
     public int ticketPoints() {
+        StationPartition partition = createStationPartition();
+        return tickets.stream().mapToInt(ticket -> ticket.points(partition)).sum();
+    }
+
+    public List<String> ticketsValue() {
+        StationPartition partition = createStationPartition();
+
+        return tickets.stream().map(ticket -> {
+            int value = ticket.points(partition);
+            return ticket.text() + " : " + value + " point" + plural(value) + (value > 0 ? " ✅" : " ❌");
+        }).collect(Collectors.toUnmodifiableList());
+    }
+
+    private StationPartition createStationPartition() {
         int stationCount = routes().isEmpty() ? 1 : routes().stream()
                 .mapToInt(r -> Math.max(r.station1().id(), r.station2().id()))
                 .max()
@@ -173,18 +185,7 @@ public final class PlayerState extends PublicPlayerState {
         StationPartition.Builder builder = new StationPartition.Builder(stationCount);
         for (Route r : routes()) builder.connect(r.station1(), r.station2());
 
-        StationPartition partition = builder.build();
-
-        return tickets.stream().mapToInt(ticket -> {
-            int value = ticket.points(partition);
-            ticketsValue.add(ticket.text() + " : " + value + " point" + plural(value));
-            return value;
-        }).sum();
-    }
-
-    public List<String> ticketsValue() {
-        ticketPoints();
-        return List.copyOf(ticketsValue);
+        return builder.build();
     }
 
     /**

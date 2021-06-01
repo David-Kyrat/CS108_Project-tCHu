@@ -91,8 +91,8 @@ final class InfoViewCreator {
         Bindings.bindContent(gameInfo.getChildren(), gameInfos);
 
         ScrollPane gameInfoWrapper = new ScrollPane(gameInfo);
-        gameInfoWrapper.setHbarPolicy(ScrollBarPolicy.NEVER);
-        gameInfoWrapper.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+        gameInfoWrapper.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+        gameInfoWrapper.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
         gameInfoWrapper.setId("game-info");
 
         return withChildren(infoView, new Separator(), gameInfoWrapper);
