@@ -41,20 +41,34 @@ public final class Game {
      * @param rng         Random generator used for the game
      */
     public static void play(Map<PlayerId, Player> playersMap, Map<PlayerId, String> playerNames, SortedBag<Ticket> tickets, Random rng) {
-        //initialize Game
-        initGame(playersMap, playerNames, tickets, rng);
+        boolean rematch = false;
+        Random random = rng;
+        do {
+            //initialize Game
+            initGame(playersMap, playerNames, tickets, random, rematch);
 
-        //handle mid-Game actions :
-        boolean isGameFinished = false, isLastTurnTriggered = false;
+            //handle mid-Game actions :
+            boolean isGameFinished = false, isLastTurnTriggered = false;
 
-        while (!isGameFinished) {
-            isGameFinished = isLastTurnTriggered;
-            isLastTurnTriggered = playATurn(rng) || playATurn(rng);
-            //play player1's turn and then player2's turn and register if any of it triggers the last turn
-        }
+            while (!isGameFinished) {
+                isGameFinished = isLastTurnTriggered;
+                isLastTurnTriggered = playATurn(rng) || playATurn(rng);
+                //play player1's turn and then player2's turn and register if any of it triggers the last turn
+            }
 
-        //handle endGame Actions:
-        endGame(playerNames);
+            //handle endGame Actions:
+            endGame(playerNames);
+
+            //ask for a rematch
+            playersMap.forEach((id, player) -> player.askForRematch());
+
+            rematch = false;
+            if(playersMap.get(PLAYER_1).rematchResponse() && playersMap.get(PLAYER_2).rematchResponse()) {
+                rematch = true;
+                random = new Random();
+            }
+
+        } while (rematch);
     }
 
     /*
@@ -71,13 +85,13 @@ public final class Game {
      * @param rng         Random generator
      */
     private static void initGame(Map<PlayerId, Player> playersMap, Map<PlayerId, String> playerNames,
-                                 SortedBag<Ticket> tickets, Random rng) {
+                                 SortedBag<Ticket> tickets, Random rng, Boolean rematch) {
 
         //check that the 2 maps rightfully have 2 pairs key/value
         Preconditions.checkArgument(playersMap.size() == PlayerId.COUNT && playerNames.size() == PlayerId.COUNT);
 
         //communicate the ids to both players
-        playersMap.forEach((playerId, player) -> player.initPlayers(playerId, playerNames));
+        playersMap.forEach((playerId, player) -> player.initPlayers(playerId, playerNames, rematch));
 
         //create the initial state of the game
         gameState = GameState.initial(tickets, rng);
@@ -101,7 +115,6 @@ public final class Game {
         //make each player choose their initial tickets
         int keptTickets1 = selectInitialTickets(PLAYER_1, players.get(PLAYER_1));
         int keptTickets2 = selectInitialTickets(PLAYER_2, players.get(PLAYER_2));
-
 
         //communicate the number of tickets kept the player
         informAll(infos.get(PLAYER_1).keptTickets(keptTickets1));

@@ -32,7 +32,7 @@ public interface Player {
      * @param ownId the identity of the player
      * @param playerNames a Map associating the ID of a player to his name
      */
-    void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames);
+    void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch);
 
     /**
      * Method called each time a piece of information must be communicated to the player during the game
@@ -110,4 +110,15 @@ public interface Player {
      *         to use additional cards)
      */
     SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options);
+
+    /**
+     * Method called at the end of the game to know if the player want a rematch
+     */
+    void askForRematch();
+
+    /**
+     * Method called to know the player answer for a rematch
+     * @return the answer
+     */
+    Boolean rematchResponse();
 }

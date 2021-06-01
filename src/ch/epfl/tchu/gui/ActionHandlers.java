@@ -2,6 +2,7 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.SortedBag;
 import ch.epfl.tchu.game.Card;
+import ch.epfl.tchu.game.Player;
 import ch.epfl.tchu.game.Route;
 import ch.epfl.tchu.game.Ticket;
 
@@ -78,5 +79,9 @@ public interface ActionHandlers {
          *                   which means that the player gives up on taking the tunnel.)
          */
         void onChooseCards(SortedBag<Card> claimCards);
+    }
+
+    interface AskHandler {
+        void ask(Boolean answer);
     }
 }

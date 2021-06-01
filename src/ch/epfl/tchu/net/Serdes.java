@@ -44,6 +44,9 @@ public final class Serdes {
     public final static Serde<String> STRING_SERDE = BYTE_SERDE.andThen(string -> string.getBytes(UTF_8),
                                                                         bytes -> new String(bytes, UTF_8));
 
+    public final static Serde<Boolean> BOOLEAN_SERDE = Serde.of(bool -> bool ? "1" : "0",
+                                                                string -> string.equals("1"));
+
     /**
      * Represents a PlayerId serializer-deserializer
      */

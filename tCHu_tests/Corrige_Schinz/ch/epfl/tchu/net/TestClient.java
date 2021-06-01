@@ -16,6 +16,7 @@ import static ch.epfl.tchu.game.Constants.INITIAL_TICKETS_COUNT;
 import static ch.epfl.tchu.game.Constants.IN_GAME_TICKETS_COUNT;
 
 public final class TestClient {
+    /*
     public static void main(String[] args) {
         System.out.println("Starting client!");
         RemotePlayerClient playerClient =
@@ -83,6 +84,7 @@ public final class TestClient {
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
             return null;
         }
-
     }
+
+     */
 }

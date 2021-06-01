@@ -35,7 +35,7 @@ import static javafx.stage.StageStyle.UTILITY;
  */
 public final class GraphicalPlayer {
 
-    private final ObservableGameState gameState;
+    private ObservableGameState gameState;
 
     private final ObjectProperty<DrawTicketsHandler> drawTicketsHandler = new SimpleObjectProperty<>(null);
     private final ObjectProperty<DrawCardHandler> drawCardHandler = new SimpleObjectProperty<>(null);
@@ -46,6 +46,7 @@ public final class GraphicalPlayer {
     private final Stage primaryStage;
     private final Stage modalStage;
     private final Scene modalScene = new Scene(new Region());
+    private final BorderPane root;
 
     /**
      * GraphicalPlayer unique constructor
@@ -73,7 +74,7 @@ public final class GraphicalPlayer {
         VBox cardsView = createCardsView(gameState, drawTicketsHandler, drawCardHandler);
         VBox infoView = createInfoView(id, playerNames, gameState, gameInfos);
 
-        BorderPane root = new BorderPane(mapView, null, cardsView, handView, infoView);
+        root = new BorderPane(mapView, null, cardsView, handView, infoView);
         Scene scene = new Scene(root);
 
         this.primaryStage.setTitle("tCHu" + LONG_DASH_SEPARATOR + playerNames.get(id));
@@ -86,6 +87,13 @@ public final class GraphicalPlayer {
         });
         resize(scene, root);
         Nodes.setShowCenter(this.primaryStage, scene, true);
+    }
+
+    public void resetForRematch() {
+        gameInfos.clear();
+        resetHandlerProperties();
+        gameState.reset();
+        root.setCenter(createMapView(gameState, claimRouteHandler, this::chooseClaimCards));
     }
 
     /**
@@ -304,12 +312,38 @@ public final class GraphicalPlayer {
         setShowCenter(modalStage, modalScene);
     }
 
-
     static Stage initModalStage(Stage primaryStage) {
         Stage modalStage = new Stage(UTILITY);
         modalStage.initOwner(primaryStage);
         modalStage.initModality(WINDOW_MODAL);
         modalStage.setOnCloseRequest(Event::consume);
         return modalStage;
+    }
+
+    public void askForRematch(AskHandler handler) {
+        assert isFxApplicationThread();
+
+        modalStage.setTitle("Rematch");
+
+        Text text = new Text("Voulez-vous une revanche ?");
+
+        Button yesButton = new Button("Oui");
+        yesButton.setOnAction(action -> {
+            modalStage.hide();
+            handler.ask(true);
+        });
+
+        Button noButton = new Button("Non");
+        noButton.setOnAction(action -> {
+            modalStage.hide();
+            handler.ask(false);
+        });
+
+        VBox root = withChildren(new VBox(), text, yesButton, noButton);
+
+        modalScene.setRoot(root);
+
+        setShowCenter(modalStage, modalScene);
+        //TODO : tout ajuster
     }
 }

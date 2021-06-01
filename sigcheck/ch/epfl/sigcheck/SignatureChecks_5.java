@@ -46,7 +46,7 @@ final class SignatureChecks_5 {
         v09 = v16.chooseTickets(v09);
         v14 = v16.claimedRoute();
         v02 = v16.drawSlot();
-        v16.initPlayers(v04, v18);
+        //v16.initPlayers(v04, v18);
         v15 = v16.initialClaimCards();
         v19 = v16.nextTurn();
         v16.receiveInfo(v20);

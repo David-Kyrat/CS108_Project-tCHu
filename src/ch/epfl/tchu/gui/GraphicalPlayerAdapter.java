@@ -22,6 +22,7 @@ public final class GraphicalPlayerAdapter implements Player {
     private final BlockingQueue<Integer> drawSlotQueue = new ArrayBlockingQueue<>(1);
     private final BlockingQueue<Route> claimRouteQueue = new ArrayBlockingQueue<>(1);
     private final BlockingQueue<SortedBag<Card>> claimCardsQueue = new ArrayBlockingQueue<>(1);
+    private final BlockingQueue<Boolean> rematchQueue = new ArrayBlockingQueue<>(1);
 
     private GraphicalPlayer graphicalPlayer;
     private Stage stage;
@@ -32,10 +33,15 @@ public final class GraphicalPlayerAdapter implements Player {
     }
 
     @Override
-    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
+    public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch) {
         System.out.println("init players and creates graphical players");
-        runLater(() -> graphicalPlayer = stage == null ? new GraphicalPlayer(ownId, playerNames)
-                                                       : new GraphicalPlayer(ownId, playerNames, stage));
+        if(!rematch) {
+            runLater(() -> graphicalPlayer = stage == null ? new GraphicalPlayer(ownId, playerNames)
+                                                           : new GraphicalPlayer(ownId, playerNames, stage));
+        } else {
+            runLater(() -> graphicalPlayer.resetForRematch());
+        }
+
     }
 
     @Override
@@ -194,6 +200,29 @@ public final class GraphicalPlayerAdapter implements Player {
 
         try {
             return claimCardsQueue.take();
+        }
+        catch (InterruptedException e) {
+            throw new Error();
+        }
+    }
+
+    @Override
+    public void askForRematch() {
+        AskHandler handler = response -> {
+            try {
+                rematchQueue.put(response);
+            } catch (InterruptedException e) {
+                throw new Error();
+            }
+        };
+
+        runLater(() -> graphicalPlayer.askForRematch(handler));
+    }
+
+    @Override
+    public Boolean rematchResponse() {
+        try {
+            return rematchQueue.take();
         }
         catch (InterruptedException e) {
             throw new Error();
