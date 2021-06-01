@@ -41,7 +41,6 @@ public final class GraphicalPlayerAdapter implements Player {
         } else {
             runLater(() -> graphicalPlayer.resetForRematch());
         }
-
     }
 
     @Override

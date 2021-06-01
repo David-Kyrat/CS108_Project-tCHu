@@ -8,6 +8,7 @@ import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.event.*;
+import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
@@ -26,8 +27,8 @@ import static ch.epfl.tchu.gui.MapViewCreator.*;
 import static ch.epfl.tchu.gui.Nodes.*;
 import static ch.epfl.tchu.gui.StringsFr.*;
 import static javafx.application.Platform.*;
-import static javafx.stage.Modality.WINDOW_MODAL;
-import static javafx.stage.StageStyle.UTILITY;
+import static javafx.stage.Modality.*;
+import static javafx.stage.StageStyle.*;
 
 /**
  * Represents the graphic interface of a player
@@ -77,6 +78,7 @@ public final class GraphicalPlayer {
         root = new BorderPane(mapView, null, cardsView, handView, infoView);
         Scene scene = new Scene(root);
 
+
         this.primaryStage.setTitle("tCHu" + LONG_DASH_SEPARATOR + playerNames.get(id));
         this.modalStage = initModalStage(primaryStage);
         this.primaryStage.setFullScreenExitHint("");
@@ -85,8 +87,9 @@ public final class GraphicalPlayer {
             if (modalStage.isShowing()) modalStage.close();
             Platform.exit();
         });
-        resize(scene, root);
-        Nodes.setShowCenter(this.primaryStage, scene, true);
+
+        resize(scene, root, mapView, cardsView, infoView, handView);
+        Nodes.setShowCenter(primaryStage, scene, true);
     }
 
     public void resetForRematch() {
@@ -101,17 +104,22 @@ public final class GraphicalPlayer {
      * @param scene scene
      * @param root  BorderPane
      */
-    private void resize(Scene scene, BorderPane root) {
-        double maxWidth = Screen.getPrimary().getBounds().getWidth();
-        Resizer resizer = new Resizer(13);
-        Pane map = (Pane) root.getCenter();
-        DoubleProperty screenWidthProperty = new SimpleDoubleProperty(Screen.getPrimary().getBounds().getWidth());
-        root.scaleXProperty().bind(screenWidthProperty.divide(maxWidth));
+    private void resize(Scene scene, BorderPane root, Pane map, VBox cardView, VBox infoView, HBox handView) {
+        double maxWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        double maxHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
+        Resizer resizerWithStage = new Resizer(primaryStage, Screen.getPrimary().getVisualBounds());
+        primaryStage.setMaxHeight(maxHeight);
         map.setManaged(false);
         double offsetX = root.getLeft().boundsInParentProperty().get().getWidth() * 3;
         map.setLayoutX(offsetX);
-        resizer.resize(root.getCenter());
+        map.setLayoutY(5);
+        resizerWithStage.resizeMap(map);
+        resizerWithStage.resize(cardView);
+        //cardsView.scaleXProperty().bind(primaryStage.widthProperty().divide(maxWidth));
 
+        root.setPadding(new Insets(0, 0, 5, 0));
+        addDebug(scene);
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.F) primaryStage.setFullScreen(!primaryStage.isFullScreen());
         });
