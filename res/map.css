@@ -4,6 +4,11 @@ ImageView {
     -fx-image: url("images/map.png");
 }
 
+.map {
+   /* -fx-max-width: 200;
+    -fx-max-height: 200;*/
+}
+
 .track {
     -fx-stroke: dimgray;
     -fx-stroke-width: 1;
