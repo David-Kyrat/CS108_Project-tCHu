@@ -16,7 +16,6 @@ import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import javax.sound.sampled.spi.AudioFileReader;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -66,22 +65,21 @@ public class Menu extends Application {
             AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) {}
 
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.F) primaryStage.setFullScreen(!primaryStage.isFullScreen());
-            else if (keyEvent.getCode() == KeyCode.P) {
-                if (clip.isRunning()) clip.stop();
+            if (keyEvent.getCode() == KeyCode.P) {
+                if(clip.isRunning()) clip.stop();
                 else clip.start();
             }
         });
         setShowCenter(primaryStage, scene, true);
         primaryStage.setFullScreen(true);
-        if (clip != null) {
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {
@@ -94,19 +92,6 @@ public class Menu extends Application {
             e.consume();
         });
         return stackPane;
-    }
-
-    private void music() {
-        try {
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInput);
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
