@@ -16,6 +16,7 @@ import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import javax.sound.sampled.spi.AudioFileReader;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -65,21 +66,22 @@ public class Menu extends Application {
             AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        catch (Exception e) {}
 
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.F) primaryStage.setFullScreen(!primaryStage.isFullScreen());
-            if (keyEvent.getCode() == KeyCode.P) {
-                if(clip.isRunning()) clip.stop();
+            else if (keyEvent.getCode() == KeyCode.P) {
+                if (clip.isRunning()) clip.stop();
                 else clip.start();
             }
         });
         setShowCenter(primaryStage, scene, true);
         primaryStage.setFullScreen(true);
-        clip.start();
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if (clip != null) {
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {
@@ -101,7 +103,8 @@ public class Menu extends Application {
             clip.open(audioInput);
             clip.start();
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        }
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
