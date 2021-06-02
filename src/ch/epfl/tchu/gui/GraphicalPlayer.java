@@ -27,6 +27,7 @@ import static ch.epfl.tchu.gui.MapViewCreator.*;
 import static ch.epfl.tchu.gui.Nodes.*;
 import static ch.epfl.tchu.gui.StringsFr.*;
 import static javafx.application.Platform.*;
+import static javafx.scene.paint.Color.*;
 import static javafx.stage.Modality.*;
 import static javafx.stage.StageStyle.*;
 
@@ -73,7 +74,7 @@ public final class GraphicalPlayer {
         Pane mapView = createMapView(gameState, claimRouteHandler, this::chooseClaimCards);
         HBox handView = createHandView(gameState);
         VBox cardsView = createCardsView(gameState, drawTicketsHandler, drawCardHandler);
-        VBox infoView = createInfoView(id, playerNames, gameState, gameInfos);
+        VBox infoView = createInfoView(id, playerNames, gameState, gameInfos, primaryStage);
 
         root = new BorderPane(mapView, null, cardsView, handView, infoView);
         Scene scene = new Scene(root);
@@ -142,9 +143,10 @@ public final class GraphicalPlayer {
      */
     public void receiveInfo(String info) {
         assert isFxApplicationThread();
-
-        //if (gameInfos.size() == DISPLAYED_INFO_COUNT) gameInfos.remove(0);
-        gameInfos.add(new Text(info));
+        System.out.println(info);
+        gameInfos.add(withAction(new Text(info), text ->
+                text.setFill(info.contains("possession") ? ORANGE
+                                                         : BLACK)));
     }
 
     /**

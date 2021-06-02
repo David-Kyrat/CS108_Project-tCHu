@@ -15,7 +15,6 @@ public final class  StringsFr {
     public static final String WHITE_CARD = "blanche";
     public static final String YELLOW_CARD = "jaune";
     public static final String LOCOMOTIVE_CARD = "locomotive";
-
     /**
      * Gives the card name 
      * @param card the card we're interested in
