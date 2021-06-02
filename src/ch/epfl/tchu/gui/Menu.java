@@ -6,10 +6,19 @@ import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
+import javafx.util.Duration;
 
+import javax.sound.sampled.*;
+import javax.sound.sampled.spi.AudioFileReader;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 import java.util.function.*;
 
@@ -30,6 +39,8 @@ public class Menu extends Application {
 
     private final static GameMenu gameMenu = new GameMenu();
 
+    private static Clip clip;
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle(TITLE);
@@ -49,17 +60,31 @@ public class Menu extends Application {
         scene.getStylesheets().addAll(FONTS_STYLESHEETS);
 
         scene.getStylesheets().add("debug.css");
+
+        try {
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
+            clip = AudioSystem.getClip();
+            clip.open(audioInput);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+
         scene.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.F) primaryStage.setFullScreen(!primaryStage.isFullScreen());
+            if (keyEvent.getCode() == KeyCode.P) {
+                if(clip.isRunning()) clip.stop();
+                else clip.start();
+            }
         });
         setShowCenter(primaryStage, scene, true);
         primaryStage.setFullScreen(true);
+        if (clip != null) {
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {
-     //   final double fakeButtonWidth = 210;
-      //  final Text buttonText = new Text(rawButtonText + "   ");
-
         StackPane stackPane = styleFantasyBtnImage(buttonText);
 
         //Reset image to normal

@@ -52,6 +52,7 @@ public final class RemotePlayerClient {
                             socket.getOutputStream(), US_ASCII));
             String message;
             String[] infos;
+
             while ((message = reader.readLine()) != null) {
                 infos = message.split(Pattern.quote(" "), -1);
                 switch (MessageId.valueOf(infos[0])) {

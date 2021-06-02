@@ -73,19 +73,6 @@ public class GameTest {
             return spb.build();
         }
 
-        /**
-         * Communicates to the player his own identity, as well as the names of the different players (including his own)
-         * @param ownId the identity of the player
-         * @param playerNames a Map associating the ID of a player to his name
-         */
-        @Override
-        public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
-            id = ownId;
-            String s1 = " you are ";
-            String s2 = " is ";
-            playerNames.forEach((playerId, name) -> receiveInfo(name + (playerId == id ? s1 : s2) + idToStr(playerId)));
-        }
-
         public static void play() {
             Map<PlayerId, String> playerNames = new HashMap<>();
             Map<PlayerId, Player> players = new HashMap<>();
@@ -119,6 +106,11 @@ public class GameTest {
         public boolean isATripCompletable(List<Route> routes) {
             StationPartition potentialStationPartition = updateStationPartition(routes);
             return ownState.tickets().stream().anyMatch(ticket -> ticket.points(potentialStationPartition) > 0);
+        }
+
+        @Override
+        public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch) {
+
         }
 
         /**
@@ -285,6 +277,16 @@ public class GameTest {
             boolean willRefuse = rng.nextInt(101) <= 25; //1/4 chances the player declines the attempt to take over the route
             if (willRefuse) return SortedBag.of();
             return chooseInList(options);
+        }
+
+        @Override
+        public void askForRematch() {
+
+        }
+
+        @Override
+        public Boolean rematchResponse() {
+            return null;
         }
 
         private List<Route> computeClaimableRoutes() {

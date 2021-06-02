@@ -29,7 +29,7 @@ public final class TestClient {
     private final static class TestPlayer implements Player {
         @Override
         public void initPlayers(PlayerId ownId,
-                                Map<PlayerId, String> names) {
+                                Map<PlayerId, String> names, Boolean booolean) {
             System.out.printf("ownId: %s\n", ownId);
             System.out.printf("playerNames: %s\n", names);
         }
@@ -81,6 +81,16 @@ public final class TestClient {
 
         @Override
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
+            return null;
+        }
+
+        @Override
+        public void askForRematch() {
+
+        }
+
+        @Override
+        public Boolean rematchResponse() {
             return null;
         }
 
