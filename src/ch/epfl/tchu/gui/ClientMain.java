@@ -15,8 +15,8 @@ public final class ClientMain extends Application {
 
     private final static String DEFAULT_PROXY_NAME = "localhost";
     final static int LOCALHOST_PORT = 5108;
-    private String proxyName;
-    private int port;
+    private final String proxyName;
+    private final int port;
 
     /**
      * Primary Constructor of Client assigning ProxyName and Port values to it so that the start method can be called
@@ -42,10 +42,8 @@ public final class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         if (proxyName == null || port == 0) new ClientMain().start(primaryStage);
 
-        System.out.println("before construction of gpa");
         GraphicalPlayerAdapter gpa = new GraphicalPlayerAdapter();
         RemotePlayerClient client = new RemotePlayerClient(gpa.setStage(primaryStage), proxyName, port);
-        System.out.println("after client");
         new Thread(client::run).start();
     }
 }

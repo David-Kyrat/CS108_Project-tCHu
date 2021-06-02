@@ -2,8 +2,8 @@ package ch.epfl.tchu.gui;
 
 import ch.epfl.tchu.game.*;
 
-public final class  StringsFr {
-    private StringsFr() {}
+public final class StringsFr {
+    private StringsFr() {throw new UnsupportedOperationException();}
 
     // Nom des cartes
     public static final String BLACK_CARD = "noire";
@@ -15,8 +15,9 @@ public final class  StringsFr {
     public static final String WHITE_CARD = "blanche";
     public static final String YELLOW_CARD = "jaune";
     public static final String LOCOMOTIVE_CARD = "locomotive";
+
     /**
-     * Gives the card name 
+     * Gives the card name
      * @param card the card we're interested in
      * @return a String of the card name
      */

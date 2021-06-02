@@ -83,9 +83,6 @@ public class Menu extends Application {
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {
-     //   final double fakeButtonWidth = 210;
-      //  final Text buttonText = new Text(rawButtonText + "   ");
-
         StackPane stackPane = styleFantasyBtnImage(buttonText);
 
         //Reset image to normal

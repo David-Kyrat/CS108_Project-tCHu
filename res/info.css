@@ -11,7 +11,7 @@
 }
 
 #game-info {
-    -fx-padding: 10;
+    -fx-padding: 10 3 10 3;
     -fx-pref-width: 200;
     -fx-line-spacing: 3;
 }

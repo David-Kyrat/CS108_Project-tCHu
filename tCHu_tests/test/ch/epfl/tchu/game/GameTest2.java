@@ -57,13 +57,17 @@ class GameTest2 {
             this.turnCounter = 0;
         }
 
-        @Override
         public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames) {
             this.ownId = ownId;
             this.ownName = playerNames.get(ownId);
             this.playerNames = playerNames;
 
             System.out.println("Joueurs initialisés");
+        }
+
+        @Override
+        public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch) {
+
         }
 
         @Override
@@ -169,6 +173,16 @@ class GameTest2 {
         @Override
         public SortedBag<Card> chooseAdditionalCards(List<SortedBag<Card>> options) {
             return options.get(rng.nextInt(options.size()));
+        }
+
+        @Override
+        public void askForRematch() {
+
+        }
+
+        @Override
+        public Boolean rematchResponse() {
+            return null;
         }
     }
 }

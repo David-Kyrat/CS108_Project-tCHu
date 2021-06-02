@@ -14,11 +14,15 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
+import java.util.regex.*;
+import java.util.stream.*;
 
+import static ch.epfl.tchu.game.Card.LOCOMOTIVE;
 import static ch.epfl.tchu.game.Constants.*;
 import static ch.epfl.tchu.gui.ConstantsGUI.*;
 import static ch.epfl.tchu.gui.DecksViewCreator.*;
@@ -37,7 +41,7 @@ import static javafx.stage.StageStyle.*;
  */
 public final class GraphicalPlayer {
 
-    private ObservableGameState gameState;
+    private final ObservableGameState gameState;
 
     private final ObjectProperty<DrawTicketsHandler> drawTicketsHandler = new SimpleObjectProperty<>(null);
     private final ObjectProperty<DrawCardHandler> drawCardHandler = new SimpleObjectProperty<>(null);
@@ -89,7 +93,7 @@ public final class GraphicalPlayer {
             Platform.exit();
         });
 
-        resize(scene, root, mapView, cardsView, infoView, handView);
+        resize(scene, root, mapView, cardsView);
         Nodes.setShowCenter(primaryStage, scene, true);
     }
 
@@ -105,8 +109,7 @@ public final class GraphicalPlayer {
      * @param scene scene
      * @param root  BorderPane
      */
-    private void resize(Scene scene, BorderPane root, Pane map, VBox cardView, VBox infoView, HBox handView) {
-        double maxWidth = Screen.getPrimary().getVisualBounds().getWidth();
+    private void resize(Scene scene, BorderPane root, Pane map, VBox cardView) {
         double maxHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
         Resizer resizerWithStage = new Resizer(primaryStage, Screen.getPrimary().getVisualBounds());
@@ -117,7 +120,6 @@ public final class GraphicalPlayer {
         map.setLayoutY(5);
         resizerWithStage.resizeMap(map);
         resizerWithStage.resize(cardView);
-        //cardsView.scaleXProperty().bind(primaryStage.widthProperty().divide(maxWidth));
 
         root.setPadding(new Insets(0, 0, 5, 0));
         addDebug(scene);
@@ -143,10 +145,71 @@ public final class GraphicalPlayer {
      */
     public void receiveInfo(String info) {
         assert isFxApplicationThread();
-        System.out.println(info);
-        gameInfos.add(withAction(new Text(info), text ->
-                text.setFill(info.contains("possession") ? ORANGE
-                                                         : BLACK)));
+        styleInfo(new Text(info), info);
+    }
+
+    private void styleInfo(Text text, String info) {
+        List<Card> foundCards = findCardsInInfo(info);
+        if (foundCards.isEmpty()) gameInfos.add(text);
+        else {
+            List<Text> texts = new ArrayList<>();
+            for (Card foundCard : foundCards) {
+                Color textColor = foundCard == LOCOMOTIVE ? CYAN :
+                                  foundCard == Card.BLACK ? rgb(77, 77, 77)
+                                                          : Color.valueOf(foundCard.name());
+
+                List<String> infoWords = Arrays.asList(info.split(Pattern.quote(" ")));
+                int colorStart = getIndexOf(infoWords.stream()
+                                                     .map(String::strip)
+                                                     .collect(Collectors.toUnmodifiableList()), foundCard.french());
+                try {
+                    Text text1 = new Text(String.join(" ", infoWords.subList(0, colorStart - 1)) + " ");
+                    Text text2 = new Text(String.join(" ", infoWords.subList(colorStart - 1, colorStart + 1)) + " ");
+                    Text text3 = null;
+                    if (colorStart + 1 <= infoWords.size())
+                        text3 = new Text(String.join(" ", infoWords.subList(colorStart + 1, infoWords.size())));
+
+                    text2.setStrokeWidth(0.3);
+                    if (textColor == WHITE) {
+                        text2.setStroke(BLACK);
+                        text2.setFill(WHITE);
+                    }
+                    else text2.setStroke(textColor);
+
+                    if (texts.size() == 0) texts.add(text1);
+                    texts.add(text2);
+
+                    if (texts.size() >= foundCards.size() + 1) {
+                        texts.add(text3);
+                    }
+                }
+                catch (Exception e) {
+                    gameInfos.add(text);
+                }
+            }
+            gameInfos.addAll(texts);
+        }
+    }
+
+    private List<Card> findCardsInInfo(String info) {
+        List<Card> foundCards = new ArrayList<>();
+        for (Card card : Card.ALL) {
+            if (info.contains(card.french())) foundCards.add(card);
+        }
+        return foundCards;
+    }
+
+
+    private int getIndexOf(List<String> infoWords, String cardFrench) {
+        int colorStart;
+        List<String> casesToCheck = List.of(cardFrench,
+                                            cardFrench + ".", cardFrench + ",", cardFrench + "s", cardFrench + "s.", cardFrench + "s,");
+        Iterator<String> it = casesToCheck.listIterator();
+        do {
+            String s = it.next();
+            colorStart = infoWords.indexOf(s);
+        } while (colorStart == -1 && it.hasNext());
+        return colorStart;
     }
 
     /**
@@ -306,7 +369,6 @@ public final class GraphicalPlayer {
 
         VBox root = withChildren(new VBox(), withChildren(new TextFlow(), new Text(text)), selectionList, button);
 
-        //Scene scene = new Scene(root);
         modalScene.setRoot(root);
         modalScene.getStylesheets().add(CHOOSER_CSS);
         modalScene.setOnKeyPressed(keyEvent -> {
@@ -354,6 +416,5 @@ public final class GraphicalPlayer {
         modalScene.setRoot(root);
 
         setShowCenter(modalStage, modalScene);
-        //TODO : tout ajuster
     }
 }

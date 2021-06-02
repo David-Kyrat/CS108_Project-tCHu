@@ -27,7 +27,7 @@ import static ch.epfl.tchu.gui.Nodes.*;
 import static javafx.geometry.Pos.*;
 import static javafx.scene.paint.Color.*;
 
-public class GameMenu /*extends Application*/ {
+public class GameMenu {
 
     final static String ICON_PATH = imgPath("menu2.jpg");
     final static String BTN_IMG_PATH = imgPath("btn.png");
@@ -43,7 +43,7 @@ public class GameMenu /*extends Application*/ {
     private final static String BACKGROUND_PATH = imgPath("gameMenu.jpg");
 
     private final CTransform trans = new CTransform(Y_AXIS, 260, -60);
-    private final double aspectRatio = 930.0 / 1300; //TODO: multiply by ratio scale resize
+    private final double aspectRatio = 930.0 / 1300;
     private final double percentage = 0.55;
 
     private final double cardH = SCENE_H * percentage;
@@ -51,12 +51,10 @@ public class GameMenu /*extends Application*/ {
 
     private enum Choice {
         HOST, CLIENT;
-        private static Choice[] choices = values();
+        private static final Choice[] choices = values();
 
         private static Choice get(int i) {return choices[i];}
     }
-
-    ;
 
     private final String defaultMsg = "Which Player are you ?";
     private final Text text = new Text(defaultMsg);
@@ -75,17 +73,12 @@ public class GameMenu /*extends Application*/ {
     /** Blue, Yellow/White, Red, Green */
 
     private final float shadowSpread = 0.5f;
-    private String[] hostArgs = new String[2];
-    private String[] clientArgs = new String[2];
+    private final String[] hostArgs = new String[2];
+    private final String[] clientArgs = new String[2];
     private Stage configStage;
     private Stage coPendingStage;
-    //final private Text playerNbText = new Text("Player " + (playerNb + 1) + " :");
 
-   /* public static void main(String[] args) {
-        launch(args);
-    }*/
-
-    public Scene scene(Stage primaryStage) {
+    Scene scene(Stage primaryStage) {
 
         List<ImagePattern> choicesIcon = List.of(new ImagePattern(new Image(imgPath("host.png"))),
                                                  new ImagePattern(new Image(imgPath("server.png"))));
@@ -100,7 +93,7 @@ public class GameMenu /*extends Application*/ {
         setUpCardChoices(choicesIcon, subRoot);
 
         Rectangle background = new Rectangle(SCENE_W, SCENE_H, new ImagePattern(new Image(BACKGROUND_PATH)));
-        /* background.setFitWidth(SCENE_W); background.setFitHeight(SCENE_H);*/
+
         StackPane backgroundSupport = new StackPane(background, root);
         backgroundSupport.setAlignment(TOP_CENTER);
         background.setLayoutY(-background.getLayoutBounds().getMaxY());
@@ -115,8 +108,6 @@ public class GameMenu /*extends Application*/ {
 
         VBox acceptBox = setUpNewVBox(0, Pos.CENTER_RIGHT, false);
         acceptBox.setMinHeight(50); acceptBox.getStyleClass().add("acceptBox");
-/*        mainButton = setUpPlayBtnAction(primaryStage);
-        mainButton.disableProperty().bind(chosen.not());*/
 
         acceptBox.getChildren().addAll(setUpStackPaneBtn("Play", primaryStage));
         textBoxP.getChildren().add(acceptBox);
@@ -133,7 +124,6 @@ public class GameMenu /*extends Application*/ {
         switch (keyEvent.getCode()) {
             case ENTER:
                 try {
-                    //  if (chosen.get() && nameField1Text != null && nameField2Text != null)
                     mainButtonAction(stage);
                 }
                 catch (Exception e) {
@@ -149,9 +139,7 @@ public class GameMenu /*extends Application*/ {
     private void setUpConfigStage(Stage primaryStage, String title, String generalTextLabel,
                                   String[] inputFieldValuesToAssign, BiConsumer<Stage, ActionEvent> onReselect,
                                   String[] promptMessages) {
-               /* if (choiceIndex == 0) {TestServer.main(new String[]{});} else {TestClient.main(new String[]{});}
-        System.out.println( choiceIndex == 0 ?  "TestServer" : "TestClient");*/
-        Stage configStage = initModalStage(primaryStage);// new Stage();
+        Stage configStage = initModalStage(primaryStage);
         configStage.setTitle(title);
         Text text = new Text(generalTextLabel);
         text.setFill(WHITE);
@@ -187,14 +175,12 @@ public class GameMenu /*extends Application*/ {
         PseudoClass empty = PseudoClass.getPseudoClass("empty");
         field1.pseudoClassStateChanged(empty, true);
         field1.textProperty().addListener((obs, oldText, newText) -> field1.pseudoClassStateChanged(empty, newText.isEmpty()));
-        //
-        //   chooseBtn.e
+
         VBox buttonBox = setUpNewVBox(0, CENTER, true);
         VBox modalRoot = new VBox(text, withChildren(buttonBox, field1, field2),
                                   withChildren(setUpNewHBox(30, TOP_CENTER, true), reselectButton, chooseBtn));
 
         buttonBox.spacingProperty().bind(configStage.heightProperty().divide(6));
-        //  modalRoot.getStyleClass().add("boxR");
 
         field1.minWidthProperty().bind(configStage.widthProperty().subtract(30));
         field2.minWidthProperty().bind(configStage.widthProperty().subtract(30));
@@ -205,7 +191,7 @@ public class GameMenu /*extends Application*/ {
 
         Scene modalScene = new Scene(new StackPane(createBackground(configStage, imgPath("1_4.jpg")), modalRoot),
                                      primaryStage.getWidth() / 2.8, primaryStage.getHeight() / 2.5);
-        //  modalScene.getStylesheets().add("debug.css");
+
         modalScene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) chooseBtn.getOnAction().handle(new ActionEvent());
         });
@@ -216,7 +202,6 @@ public class GameMenu /*extends Application*/ {
     }
 
     private void connectionPending(Stage primaryStage) {
-        //  Stage stage = initModalStage(primaryStage);
         coPendingStage = new Stage();
         coPendingStage.setTitle("Please wait, connection Pending...");
         coPendingStage.getIcons().add(new Image(ICON_PATH));
@@ -235,7 +220,7 @@ public class GameMenu /*extends Application*/ {
 
         root.getChildren().addAll(connectionPendingText, connectionPendingText2);
 
-        String bgPath = imgPath("1_3.jpg");
+        String bgPath = imgPath("1_4.jpg");
         Scene scene = new Scene(new StackPane(createBackground(coPendingStage, bgPath), root),
                                 primaryStage.getWidth() / 2.5, primaryStage.getHeight() / 3);
         scene.getStylesheets().add("GameMenu.css");
@@ -243,13 +228,10 @@ public class GameMenu /*extends Application*/ {
         root.minWidthProperty().bind(scene.widthProperty());
         root.minHeightProperty().bind(scene.heightProperty());
 
-        // configStage.setTitle("Connection Pending");
-
         setShow(coPendingStage, scene);
     }
 
     private ImageView createBackground(Stage stage, String path) {
-        //String path = imgPath("1_3.jpg");
         ImageView imageView = new ImageView(path);
         imageView.fitHeightProperty().bind(stage.heightProperty());
         imageView.fitWidthProperty().bind(stage.widthProperty());
@@ -325,7 +307,6 @@ public class GameMenu /*extends Application*/ {
     private StackPane setUpStackPaneBtn(String text, Stage primaryStage) {
         //Reset image to normal
         StackPane stackPane = styleFantasyBtnImage(text);
-        //stackPane.disableProperty().bind(chosen.not());
         stackPane.setOnMouseReleased(e -> {
             setUpBtnClickEffect(stackPane);
             e.consume();
@@ -354,13 +335,11 @@ public class GameMenu /*extends Application*/ {
                     try {
                         serverMain.start(primaryStage);
                         coPendingStage.close();
-                        System.out.println("Closed stage");
                     }
                     catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-                System.out.println("should have started");
             }
             else if (isPlayerChosenProperty.get()) {
                 setUpConfigStage(primaryStage, "Menu - Name Configuration", "Enter Both Names",
@@ -375,7 +354,6 @@ public class GameMenu /*extends Application*/ {
         else {
             if (isGameConfigured && isPlayerChosenProperty.get()) {
                 try {
-                    System.out.println(Arrays.toString(clientArgs));
                     new ClientMain(clientArgs[0], clientArgs[1]).start(primaryStage);
                 }
                 catch (Exception e) {
@@ -416,7 +394,6 @@ public class GameMenu /*extends Application*/ {
     private void onCardReleased(GraphicalCard card, MouseEvent mouseEvent) {
         final Rectangle rectangle = (Rectangle) ((Pane) card.getChildren().get(0)).getChildren().get(0);
         final DropShadow ds = (DropShadow) rectangle.getEffect();
-        final int idx = Integer.parseInt(card.getStyleClass().get(0));
 
         rectangle.setEffect(setUpShadow(ds.getColor(), ds.getRadius() * 2.5, shadowSpread));
 
@@ -424,9 +401,7 @@ public class GameMenu /*extends Application*/ {
                                         .stream()
                                         .filter(transform -> transform instanceof Translate)
                                         .findFirst()
-                                        .orElseThrow()
-                /* .orElse(null)*/);
-//TODO: check here
+                                        .orElseThrow());
         isPlayerChosenProperty.set(true);
         mouseEvent.consume();
     }
@@ -479,12 +454,6 @@ public class GameMenu /*extends Application*/ {
 
     }
 
-
-    /**
-     * Update the text in playerNbText to match the actual playerNb
-     */
-//    private void updatePlayerNbText() {playerNbText.setText("Player " + (playerNb + 1) + " :");}
-
     /**
      * SetUp the big text that will appear under the cards to indicate which faction is currently chosen
      */
@@ -500,15 +469,10 @@ public class GameMenu /*extends Application*/ {
         text.setFill(WHITE);
         text.setStroke(BLACK);
 
-        //  final VBox playerNbBox = setUpNewVBox(0, Pos.BOTTOM_CENTER, true);
         textBox.getChildren().addAll(text);
 
-        /*playerNbBox.getStyleClass().add("playerNbBox");
-        playerNbBox.getChildren().add(playerNbText);*/
-        textBoxParent.getChildren().addAll(/*playerNbBox,*/ textBox);
+        textBoxParent.getChildren().add(textBox);
         textBoxCtnr.getChildren().add(textBoxParent);
-        //  playerNbText.getStyleClass().add("playerNb");
-
         return textBoxCtnr;
     }
 
@@ -527,8 +491,6 @@ public class GameMenu /*extends Application*/ {
         text.getStyleClass().add("picked");
         textBox.getStyleClass().remove("notPicked");
         textBox.getStyleClass().add("noUnderline");
-
-        //  faction[playerNb] = getFaction(cards.indexOf(card));
     }
 
     /**
