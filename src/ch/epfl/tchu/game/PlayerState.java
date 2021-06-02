@@ -172,7 +172,7 @@ public final class PlayerState extends PublicPlayerState {
 
         return tickets.stream().map(ticket -> {
             int value = ticket.points(partition);
-            return ticket.text() + " : " + value + " point" + plural(value) + (value > 0 ? " ✅" : " ❌");
+            return ticket.text() + "    :  " + value + " point" + plural(value) + "   " + (value > 0 ? "✅" : "❌");
         }).collect(Collectors.toUnmodifiableList());
     }
 

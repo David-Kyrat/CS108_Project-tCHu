@@ -98,7 +98,7 @@ public class GameMenu {
         backgroundSupport.setAlignment(TOP_CENTER);
         background.setLayoutY(-background.getLayoutBounds().getMaxY());
 
-        Scene menuScene = new Scene(backgroundSupport, primaryStage.getWidth(), primaryStage.getHeight(), BROWN);
+        Scene menuScene = new Scene(backgroundSupport, primaryStage.getWidth(), primaryStage.getHeight(), SADDLEBROWN);
         menuScene.getStylesheets().addAll(FONTS_STYLESHEETS);
         root.getStyleClass().add("menu");
 

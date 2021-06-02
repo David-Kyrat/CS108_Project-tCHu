@@ -61,12 +61,12 @@ public final class ObservableGameState {
     public ObservableGameState(PlayerId id) {
         playerId = id;
         reset();
+
     }
 
     public void reset() {
         gameState = null;
         playerState = null;
-
         ticketsPercentage.set(0);
         cardsPercentage.set(0);
 

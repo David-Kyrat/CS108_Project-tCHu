@@ -473,11 +473,9 @@ public final class GraphicalPlayer {
             mapView.setLayoutX(0);
             mapView.getChildren().get(0).getStyleClass().add("boxG");
             resize(primaryScene, root, mapView, cardView);
-            //mapView.setLayoutX(offsetX/6);
-            mapView.setLayoutX(primaryStage.getWidth()/2 - mapView.getLayoutBounds().getMinX() - 50);
-            mapView.setManaged(true);
-            mapView.translateXProperty().bind(primaryStage.widthProperty().divide(-13));
-            mapView.translateYProperty().bind(primaryStage.heightProperty().divide(-14));
+            mapView.setLayoutX(offsetX/6);
+            //mapView.setLayoutX(primaryStage.getWidth()/2 - mapView.getLayoutBounds().getMinX() - 50);
+
         });
     }
 
