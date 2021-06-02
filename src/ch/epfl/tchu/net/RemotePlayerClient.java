@@ -54,9 +54,6 @@ public final class RemotePlayerClient {
             String[] infos;
             while ((message = reader.readLine()) != null) {
                 infos = message.split(Pattern.quote(" "), -1);
-                System.out.println("inside loop");
-                System.out.println(MessageId.valueOf(infos[0]));
-
                 switch (MessageId.valueOf(infos[0])) {
                     case INIT_PLAYERS:
                         PlayerId id = ID_SERDE.deserialize(infos[1]);

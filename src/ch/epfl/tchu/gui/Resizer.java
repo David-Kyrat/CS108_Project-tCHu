@@ -1,47 +1,89 @@
 package ch.epfl.tchu.gui;
 
+import javafx.beans.binding.*;
+import javafx.beans.property.*;
+import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.stage.*;
 
 /**
  * @author Noah Munz (310779)
  */
 class Resizer {
     private final static double PERFECT_SCREEN_SIZE = toMeter(16);
-    private final double screenSize;
-    private final double ratioX, ratioY;
+    private final static double PERFECT_WIDTH = 1500, PERFECT_HEIGHT = 920;
 
-    Resizer(double screenSizeInch) {
+    private final double maxWidth, maxHeight;
+    private final DoubleProperty mapRatioX, mapRatioY;
+    private Stage primaryStage;
+    private double screenSize;
+    //  private final double mapScaleFactor;
+
+    Resizer(double screenSizeInch, Rectangle2D visualBounds) {
         this.screenSize = toMeter(screenSizeInch);
-        this.ratioY = (screenSize/ PERFECT_SCREEN_SIZE);
-        this.ratioX = ratioY + ((1 - ratioY) / 4);
+        this.maxWidth = visualBounds.getWidth();
+        this.maxHeight = visualBounds.getHeight();
+        this.mapRatioY = new SimpleDoubleProperty(maxHeight / PERFECT_HEIGHT); //new SimpleDoubleProperty(screenSize / PERFECT_SCREEN_SIZE);
+        this.mapRatioX = new SimpleDoubleProperty(maxWidth / PERFECT_WIDTH);  //ratioY.get() + ((1 - ratioY.get()) / 4));
     }
 
-    public double ratioX() {
-        return ratioX;
+    Resizer(Stage primaryStage, Rectangle2D visualBounds) {
+        this.maxWidth = visualBounds.getWidth();
+        this.maxHeight = visualBounds.getHeight();
+        this.mapRatioX = new SimpleDoubleProperty();
+        this.mapRatioY = new SimpleDoubleProperty();
+        this.primaryStage = primaryStage;
+        mapRatioX.bind(primaryStage.widthProperty().divide(PERFECT_WIDTH));
+        mapRatioY.bind(primaryStage.heightProperty().divide(PERFECT_HEIGHT));
     }
 
-    public double ratioY() {
-        return ratioY;
+    public DoubleProperty ratioX() {
+        return mapRatioX;
+    }
+
+    public DoubleProperty ratioY() {
+        return mapRatioY;
     }
 
     /**
-     * Set ScaleX and ScaleY to ratio which is determined by screenSize / PERFECT_SCREEN_SIZE
-     * @param node Node to set Scale
+     * Set ScaleX and ScaleY of mapView to ratio which is determined by maxWidth / PERFECT_WIDTH, same for height
+     * @param pane Pane to set Scale
      */
-    public void resize(Node node) {
-        node.setScaleX(ratioX);
-        node.setScaleY(ratioY);
+    public void resizeMap(Pane pane) {
+        bindScaleProperty(pane, mapRatioX, mapRatioY);
     }
 
-    public void resizeBorderPaneRoot(BorderPane root) {
+    void resize(Node node) {
+        bindScaleProperty(node, primaryStage.widthProperty().divide(maxWidth), primaryStage.heightProperty().divide(maxHeight));
+    }
+   /* void resizeMap(Node node) {
+        node.setScaleX(mapScaleFactor);
+        node.setScaleY(mapScaleFactor);
+    }*/
+
+    static void bindScaleProperty(Node observedNode, Node observingNode) {
+        bindScaleProperty(observingNode, observedNode.scaleXProperty(), observedNode.scaleYProperty());
+    }
+
+
+    static void bindScaleProperty(Node node, DoubleBinding scaleX, DoubleBinding scaleY) {
+        node.scaleXProperty().bind(scaleX);
+        node.scaleYProperty().bind(scaleY);
+    }
+
+
+    static void bindScaleProperty(Node node, DoubleProperty scaleX, DoubleProperty scaleY) {
+        node.scaleXProperty().bind(scaleX);
+        node.scaleYProperty().bind(scaleY);
+    }
+
+  /*  public void resizeBorderPaneRoot(BorderPane root) {
         try {
             Pane mapView = (Pane) root.getCenter();
             ImageView mapImg = (ImageView) mapView.getChildren().get(0);
             mapView.setScaleX(ratioX);
             mapView.setScaleY(ratioY);
-
 
         }
         catch (ClassCastException cce) {
@@ -49,7 +91,7 @@ class Resizer {
         }
 
 
-    }
+    }*/
 
-    private static double toMeter(double inch) {return (inch / 39.37);}
+    private static double toMeter(double inches) {return (inches / 39.37);}
 }

@@ -15,13 +15,18 @@ public final class Stage11TestGraphical extends Application {
     private String[] args;
     public void startWithArgs(Stage primaryStage, String[] givenArgs) {
         args = givenArgs;
-        start(primaryStage);
+        try {
+            start(primaryStage);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         SortedBag<Ticket> tickets = SortedBag.of(ChMap.tickets());
 
-        Map<PlayerId, String> names = Map.of(PLAYER_1, args[0], PLAYER_2, args[1]);
+        Map<PlayerId, String> names = Map.of(PLAYER_1,"Ada", PLAYER_2, "Charles");
         GraphicalPlayerAdapter gpa = new GraphicalPlayerAdapter();
         Map<PlayerId, Player> players = Map.of(PLAYER_1, gpa,
                                                PLAYER_2, gpa);

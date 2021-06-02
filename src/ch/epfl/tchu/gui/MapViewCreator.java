@@ -17,7 +17,6 @@ import static ch.epfl.tchu.gui.Nodes.*;
 
 /**
  * Class used to initialize & implements all the JavaFx graphical components regarding the map of the game board
- *
  * @author Noah Munz (310779)
  * @author Mehdi Bouguerra Ezzina (314857)
  */
@@ -32,7 +31,6 @@ final class MapViewCreator {
 
     /**
      * Creates a view of the Swiss Map on which the game unfolds
-     *
      * @param gameState         observable State of the game
      * @param claimRouteHandler property containing the action handler corresponding to all actions regarding the claim of a Route
      * @param cardChooser       instance of interface called when player has to choose which card to use to claim a Route
@@ -45,14 +43,16 @@ final class MapViewCreator {
 
         List<Group> routeNodes = ChMap.routes()
                                       .stream()
-                                      .map(route -> makeRouteNode(route, gameState, claimRouteHandler, cardChooser))
+                                      .map(route -> makeRouteNode(route, gameState, claimRouteHandler, cardChooser, map))
                                       .collect(Collectors.toUnmodifiableList());
 
+        map.getStyleClass().add("map");
         return withChildren(map, routeNodes);
     }
 
     private static Group makeRouteNode(Route route, ObservableGameState gameState,
-                                       ReadOnlyObjectProperty<ClaimRouteHandler> claimRouteHandler, CardChooser cardChooser) {
+                                       ReadOnlyObjectProperty<ClaimRouteHandler> claimRouteHandler,
+                                       CardChooser cardChooser, Pane mapView) {
 
         Group routeGroup = withClass(new Group(), ROUTE_CLASS, route.level().name(), colorClass(route.color()));
         routeGroup.setId(route.id());
@@ -75,13 +75,14 @@ final class MapViewCreator {
         routeGroup.setOnMouseClicked(mouseEvent -> {
             List<SortedBag<Card>> possibleClaimCards = gameState.possibleClaimCards(route);
 
-            if(possibleClaimCards.size() == 1) claimRouteHandler.getValue().onClaimRoute(route, possibleClaimCards.get(0));
+            if (possibleClaimCards.size() == 1) claimRouteHandler.getValue().onClaimRoute(route, possibleClaimCards.get(0));
             else {
                 ChooseCardsHandler choiceHandler = chosenCard -> claimRouteHandler.getValue().onClaimRoute(route, chosenCard);
                 cardChooser.chooseCards(possibleClaimCards, choiceHandler);
             }
         });
-
+        //if we want to resize the map we have to make sure that the relative (to the imageView) position of the routesView stay the same
+        Resizer.bindScaleProperty(mapView, routeGroup);
         return routeGroup;
     }
 
@@ -110,7 +111,6 @@ final class MapViewCreator {
     interface CardChooser {
         /**
          * Called method when the player must choose the cards he wants to use to take a road
-         *
          * @param options List of SortedBag of its possibilities
          * @param handler ChooseCardsHandler used once the choice is made
          */

@@ -8,6 +8,7 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
+import java.util.function.*;
 
 /**
  * This class contains frequently used methods that are adapted in order to make the code more clear
@@ -17,6 +18,11 @@ final class Nodes {
 
     private Nodes() {
         throw new UnsupportedOperationException();
+    }
+
+    static <E extends Node> E withAction(E nodeToPerformActionOn, Consumer<E> actionPerformer) {
+        actionPerformer.accept(nodeToPerformActionOn);
+        return  nodeToPerformActionOn;
     }
 
     /**

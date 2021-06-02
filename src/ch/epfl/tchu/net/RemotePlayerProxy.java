@@ -46,7 +46,6 @@ public final class RemotePlayerProxy implements Player {
 
     @Override
     public void initPlayers(PlayerId ownId, Map<PlayerId, String> playerNames, Boolean rematch) {
-        System.out.println("init players");
         List<String> values = PlayerId.ALL.stream()
                                           .map(playerNames::get)
                                           .collect(Collectors.toUnmodifiableList());
