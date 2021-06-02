@@ -6,10 +6,18 @@ import javafx.scene.*;
 import javafx.scene.image.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
+import javafx.util.Duration;
 
+import javax.sound.sampled.*;
+import javax.sound.sampled.spi.AudioFileReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.*;
 
@@ -54,6 +62,7 @@ public class Menu extends Application {
         });
         setShowCenter(primaryStage, scene, true);
         primaryStage.setFullScreen(true);
+        music();
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {
@@ -69,6 +78,18 @@ public class Menu extends Application {
             e.consume();
         });
         return stackPane;
+    }
+
+    private void music() {
+        try {
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
