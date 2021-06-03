@@ -60,13 +60,9 @@ public final class ObservableGameState {
      */
     public ObservableGameState(PlayerId id) {
         playerId = id;
-        reset();
-
-    }
-
-    public void reset() {
         gameState = null;
         playerState = null;
+
         ticketsPercentage.set(0);
         cardsPercentage.set(0);
 
@@ -78,11 +74,33 @@ public final class ObservableGameState {
             isRouteClaimable.put(route, new SimpleBooleanProperty(false));
         }
 
-        for (PlayerId playerId : ALL) {
+        for (int i = 0 ; i < PlayerId.COUNT ; i++) {
             ticketCounts.add(new SimpleIntegerProperty(0));
             cardCounts.add(new SimpleIntegerProperty(0));
             carCounts.add(new SimpleIntegerProperty(0));
             claimPoints.add(new SimpleIntegerProperty(0));
+        }
+    }
+
+    public void reset() {
+        gameState = null;
+        playerState = null;
+
+        ticketsPercentage.set(0);
+        cardsPercentage.set(0);
+
+        for (Card card : Card.ALL) colorCardCount.get(card).set(0);
+
+        for (Route route : ChMap.routes()) {
+            routeOwner.get(route).set(null);
+            isRouteClaimable.get(route).set(false);
+        }
+
+        for (int i = 0 ; i < PlayerId.COUNT ; i++) {
+            ticketCounts.get(i).set(0);
+            cardCounts.get(i).set(0);
+            carCounts.get(i).set(0);
+            claimPoints.get(i).set(0);
         }
     }
 

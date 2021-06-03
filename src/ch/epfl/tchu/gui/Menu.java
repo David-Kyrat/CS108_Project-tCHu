@@ -66,7 +66,7 @@ public class Menu extends Application {
             clip = AudioSystem.getClip();
             clip.open(audioInput);
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
         scene.setOnKeyPressed(keyEvent -> {
@@ -78,10 +78,8 @@ public class Menu extends Application {
         });
         setShowCenter(primaryStage, scene, true);
         primaryStage.setFullScreen(true);
-        if (clip != null) {
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
+        clip.start();
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     private StackPane setUpBtnImage(Stage stage, String buttonText, Consumer<Stage> btnFunction) {

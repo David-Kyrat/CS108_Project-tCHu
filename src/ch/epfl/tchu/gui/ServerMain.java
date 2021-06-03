@@ -58,4 +58,14 @@ public final class ServerMain extends Application {
         }).start();
 
     }
+
+    /**
+     * useful when Main method is called statically without defining explicitely playerNames with the construction of an instance of this
+     */
+   /* private void initForMain() {
+        List<String> args = getParameters().getRaw().isEmpty() ? List.of(ADA, CHARLES)
+                                                               : getParameters().getRaw();
+        if (args.size() < 2) args.add(CHARLES);
+        this.args = new String[]{args.get(0), args.get(1)};
+    }*/
 }

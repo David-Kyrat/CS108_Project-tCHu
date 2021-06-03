@@ -226,8 +226,7 @@ final class Nodes {
      * @param scene sceen to add StyleSheet to
      */
     public static void addDebug(Scene scene) {
-        String path = "debug.css";
-        if (!scene.getStylesheets().contains(path)) scene.getStylesheets().add(path);
+        scene.getStylesheets().add("debug.css");
     }
 
 }

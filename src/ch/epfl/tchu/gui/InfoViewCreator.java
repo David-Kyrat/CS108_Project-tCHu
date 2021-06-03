@@ -11,6 +11,7 @@ import javafx.scene.text.*;
 import javafx.stage.*;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static ch.epfl.tchu.gui.ConstantsGUI.*;
 import static ch.epfl.tchu.gui.Nodes.*;
@@ -62,37 +63,35 @@ final class InfoViewCreator {
 
         VBox infoView = new VBox();
         infoView.getStylesheets().addAll(INFO_CSS, COLORS_CSS);
-        VBox playerStats = null;
-        for (PlayerId playerId : PlayerId.ALL) {
-            Text stats = new Text();
-            stats.textProperty().bind(
-                    Bindings.format(PLAYER_STATS,
+        Stream.of(id, id.next())
+                .forEach(playerId -> {
+                    Text stats = new Text();
+                    stats.textProperty().bind(
+                            Bindings.format(PLAYER_STATS,
                                     playerNames.get(playerId),
                                     gameState.ticketCountsProperty(playerId),
                                     gameState.cardCountsProperty(playerId),
                                     gameState.carCountsProperty(playerId),
                                     gameState.claimPointsProperty(playerId)));
 
-            TextFlow statsInfo = new TextFlow(withClass(new Circle(COLORED_CIRCLE_RADIUS), FILLED_CLASS),
-                                              stats);
-            withClass(statsInfo, playerId.name());
+                    TextFlow statsInfo = new TextFlow( withClass(new Circle(COLORED_CIRCLE_RADIUS), FILLED_CLASS),
+                            stats);
+                    withClass(statsInfo, playerId.name());
 
-            playerStats = new VBox(statsInfo);
-            playerStats.setId("player-stats");
+                    VBox playerStats = new VBox(statsInfo);
+                    playerStats.setId("player-stats");
 
-
-            withChildren(infoView, playerStats);
-        }
+                    withChildren(infoView, playerStats);
+                });
 
         TextFlow gameInfo = new TextFlow();
         Bindings.bindContent(gameInfo.getChildren(), gameInfos);
+
         ScrollPane gameInfoWrapper = new ScrollPane(gameInfo);
+        gameInfoWrapper.setId("game-info");
         gameInfoWrapper.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
         gameInfoWrapper.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-
         gameInfoWrapper.vvalueProperty().bind(gameInfo.heightProperty());
-
-        gameInfoWrapper.setId("game-info");
 
         gameInfo.maxWidthProperty().bind(primaryStage.widthProperty().multiply(0.14));
         return withChildren(infoView, new Separator(), gameInfoWrapper);

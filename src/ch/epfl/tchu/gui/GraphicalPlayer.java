@@ -51,10 +51,8 @@ public final class GraphicalPlayer {
 
     private final Stage primaryStage;
     private final Stage modalStage;
-    private Scene primaryScene;
     private final Scene modalScene = new Scene(new Region());
-    private BorderPane root;
-    private double offsetX;
+    private final BorderPane root;
 
     /**
      * GraphicalPlayer unique constructor
@@ -83,7 +81,8 @@ public final class GraphicalPlayer {
         VBox infoView = createInfoView(id, playerNames, gameState, gameInfos, primaryStage);
 
         root = new BorderPane(mapView, null, cardsView, handView, infoView);
-        primaryScene = new Scene(root);
+        Scene scene = new Scene(root);
+
 
         this.primaryStage.setTitle("tCHu" + LONG_DASH_SEPARATOR + playerNames.get(id));
         this.modalStage = initModalStage(primaryStage);
@@ -94,17 +93,15 @@ public final class GraphicalPlayer {
             Platform.exit();
         });
 
-        resize(primaryScene, root, mapView, cardsView);
-        Nodes.setShowCenter(primaryStage, primaryScene, false);
+        resize(scene, root, mapView, cardsView);
+        Nodes.setShowCenter(primaryStage, scene, true);
     }
 
-    private void resetSizePos(Pane mapView, VBox cardView) {
-        Resizer.unBindScale(mapView);
-        mapView.setLayoutX(0);
-        mapView.setLayoutY(0);
-        Resizer.unBindScale(cardView);
-        cardView.setLayoutX(0);
-        cardView.setLayoutY(0);
+    public void resetForRematch() {
+        gameInfos.clear();
+        resetHandlerProperties();
+        gameState.reset();
+        //root.setCenter(createMapView(gameState, claimRouteHandler, this::chooseClaimCards));
     }
 
     /**
@@ -118,7 +115,7 @@ public final class GraphicalPlayer {
         Resizer resizerWithStage = new Resizer(primaryStage, Screen.getPrimary().getVisualBounds());
         primaryStage.setMaxHeight(maxHeight);
         map.setManaged(false);
-        offsetX = root.getLeft().boundsInParentProperty().get().getWidth() * 3;
+        double offsetX = root.getLeft().boundsInParentProperty().get().getWidth() * 3;
         map.setLayoutX(offsetX);
         map.setLayoutY(5);
         resizerWithStage.resizeMap(map);
@@ -130,7 +127,6 @@ public final class GraphicalPlayer {
             if (keyEvent.getCode() == KeyCode.F) primaryStage.setFullScreen(!primaryStage.isFullScreen());
         });
     }
-
 
     /**
      * Updates all the properties representing the game
@@ -154,19 +150,7 @@ public final class GraphicalPlayer {
 
     private void styleInfo(Text text, String info) {
         List<Card> foundCards = findCardsInInfo(info);
-        if (foundCards.isEmpty()) {
-            if (info.contains("victoire") || info.contains("ex æqo")) {
-                text = newTxt(info, text.getFont().getName(), GREEN, (int) text.getFont().getSize(), FontWeight.BOLD);
-                text.setStroke(GREEN);
-                text.setStrokeWidth(0.2);
-            }
-            if (info.contains("ex æqo")) {
-                text.setStroke(SANDYBROWN);
-                text.setFill(SANDYBROWN);
-            }
-            gameInfos.add(text);
-
-        }
+        if (foundCards.isEmpty()) gameInfos.add(text);
         else {
             List<Text> texts = new ArrayList<>();
             for (Card foundCard : foundCards) {
@@ -433,48 +417,4 @@ public final class GraphicalPlayer {
 
         setShowCenter(modalStage, modalScene);
     }
-
-    /**
-     * Reset fields and views for rematch
-     */
-    public void resetForRematch() {
-        primaryStage.hide();
-        primaryScene.setRoot(new Pane());
-        Pane oldMapView = (Pane) root.getCenter();
-        VBox cardView = (VBox) root.getRight();
-        addDebug(primaryScene);
-        resetSizePos(oldMapView, cardView);
-        root.setCenter(null);
-        root.setRight(null);
-        gameInfos.clear();
-        resetHandlerProperties();
-        gameState.reset();
-        Pane mapView = createMapView(gameState, claimRouteHandler, this::chooseClaimCards);
-        mapView.getStyleClass().add("boxR");
-        root.getLeft().getStyleClass().add("boxCy");
-        HBox bottom = (HBox) root.getBottom();
-        VBox left = (VBox) root.getLeft();
-        root.getChildren().clear();
-
-        root = new BorderPane(mapView, null, cardView, bottom, left);
-
-        root.getStyleClass().add("boxB");
-        root.getBottom().getStyleClass().add("boxP");
-        primaryScene.setRoot(root);
-
-        resize(primaryScene, root, mapView, cardView);
-        root.setCenter(null);
-        primaryStage.show();
-        Platform.runLater(() -> {
-            root.setCenter(mapView);
-            mapView.setManaged(true);
-            resetSizePos(mapView, cardView);
-            mapView.setManaged(false);
-            mapView.setLayoutX(0);
-            mapView.getChildren().get(0).getStyleClass().add("boxG");
-            resize(primaryScene, root, mapView, cardView);
-            mapView.setLayoutX(offsetX/6);
-        });
-    }
-
 }

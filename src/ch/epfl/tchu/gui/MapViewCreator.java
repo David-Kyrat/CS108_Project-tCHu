@@ -60,6 +60,7 @@ final class MapViewCreator {
         gameState.routeOwnerProperty(route)
                  .addListener((property, oldValue, newValue) -> {
                      if (newValue != null) withClass(routeGroup, newValue.name());
+                     else if (oldValue != null) routeGroup.getStyleClass().set(3, null);
                  });
 
         routeGroup.disableProperty().bind(

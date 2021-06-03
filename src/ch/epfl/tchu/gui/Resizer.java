@@ -57,6 +57,10 @@ class Resizer {
     void resize(Node node) {
         bindScaleProperty(node, primaryStage.widthProperty().divide(maxWidth), primaryStage.heightProperty().divide(maxHeight));
     }
+   /* void resizeMap(Node node) {
+        node.setScaleX(mapScaleFactor);
+        node.setScaleY(mapScaleFactor);
+    }*/
 
     static void bindScaleProperty(Node observedNode, Node observingNode) {
         bindScaleProperty(observingNode, observedNode.scaleXProperty(), observedNode.scaleYProperty());
@@ -74,10 +78,20 @@ class Resizer {
         node.scaleYProperty().bind(scaleY);
     }
 
-    static void unBindScale(Pane pane) {
-        pane.scaleXProperty().unbind();
-        pane.scaleYProperty().unbind();
-    }
+  /*  public void resizeBorderPaneRoot(BorderPane root) {
+        try {
+            Pane mapView = (Pane) root.getCenter();
+            ImageView mapImg = (ImageView) mapView.getChildren().get(0);
+            mapView.setScaleX(ratioX);
+            mapView.setScaleY(ratioY);
+
+        }
+        catch (ClassCastException cce) {
+            System.out.println("Wrong Argument, it is not the root of the main Scene of the Graphical representation of the game");
+        }
+
+
+    }*/
 
     private static double toMeter(double inches) {return (inches / 39.37);}
 }
