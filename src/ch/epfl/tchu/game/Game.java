@@ -62,9 +62,7 @@ public final class Game {
             //ask for a rematch
             playersMap.forEach((id, player) -> player.askForRematch());
 
-            rematch = false;
-            if(playersMap.get(PLAYER_1).rematchResponse() && playersMap.get(PLAYER_2).rematchResponse()) {
-                rematch = true;
+            if(rematch = (playersMap.get(PLAYER_1).rematchResponse() && playersMap.get(PLAYER_2).rematchResponse())) {
                 random = new Random();
             }
 

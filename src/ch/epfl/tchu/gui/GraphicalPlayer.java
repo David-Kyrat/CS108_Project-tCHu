@@ -403,7 +403,7 @@ public final class GraphicalPlayer {
         return modalStage;
     }
 
-    public void askForRematch(AskHandler handler) {
+    public void forRematch(AskHandler handler) {
         assert isFxApplicationThread();
 
         modalStage.setTitle("Rematch");

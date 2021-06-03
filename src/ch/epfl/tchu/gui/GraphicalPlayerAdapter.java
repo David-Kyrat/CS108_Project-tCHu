@@ -215,7 +215,7 @@ public final class GraphicalPlayerAdapter implements Player {
             }
         };
 
-        runLater(() -> graphicalPlayer.askForRematch(handler));
+        runLater(() -> graphicalPlayer.forRematch(handler));
     }
 
     @Override
