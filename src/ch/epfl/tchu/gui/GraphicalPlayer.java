@@ -150,7 +150,18 @@ public final class GraphicalPlayer {
 
     private void styleInfo(Text text, String info) {
         List<Card> foundCards = findCardsInInfo(info);
-        if (foundCards.isEmpty()) gameInfos.add(text);
+        if (foundCards.isEmpty()) {
+            if (info.contains("victoire") || info.contains("ex æqo")) {
+                text = newTxt(info, text.getFont().getName(), GREEN, (int) text.getFont().getSize(), FontWeight.BOLD);
+                text.setStroke(GREEN);
+                text.setStrokeWidth(0.2);
+            }
+            if (info.contains("ex æqo")) {
+                text.setStroke(SANDYBROWN);
+                text.setFill(SANDYBROWN);
+            }
+            gameInfos.add(text);
+        }
         else {
             List<Text> texts = new ArrayList<>();
             for (Card foundCard : foundCards) {
