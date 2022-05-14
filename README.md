@@ -1,3 +1,10 @@
+Made with:  
+ ![Java](https://img.shields.io/badge/Java-≥11.0-%23ED8B00.svg?style=for-the-badge&logo=java&labelColor=FF7518&color=grey)
+ ![JavaFx](https://img.shields.io/badge/JavaFX-≥11.0-%23ED8B00.svg?style=for-the-badge&logo=java&labelColor=4B9CD3&color=grey)
+ ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+<br>
+
 # CS108_Project-tCHu
 
 ## EPFL - CS-108 Project "tCHu": Board game based on "Ticket to ride"
