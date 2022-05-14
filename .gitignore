@@ -12,9 +12,7 @@ out/**/*
 # Scripts and config Files
 scripts
 Tchu_Jar_Executable
-Tchu_Jar_Executable/tmp/a.exe
-Tchu_Jar_Executable/tmp/
-Tchu_Jar_Executable/tmp/*
+
 #Tchu_Jar_Executable/run-tchu.bat
 #Tchu_Jar_Executable/files/
 
