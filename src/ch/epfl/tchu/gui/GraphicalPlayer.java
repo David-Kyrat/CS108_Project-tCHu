@@ -120,7 +120,6 @@ public final class GraphicalPlayer {
         map.setLayoutY(5);
         resizerWithStage.resizeMap(map);
         resizerWithStage.resize(cardView);
-
         root.setPadding(new Insets(0, 0, 5, 0));
         addDebug(scene);
         scene.setOnKeyPressed(keyEvent -> {

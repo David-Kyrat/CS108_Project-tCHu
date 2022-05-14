@@ -4,6 +4,8 @@
 # Specific Files
 TestTripsFromTicketText.txt
 asd
+Correct_FileArchitecture*.png
+
 # Compiled class and config Files
 *.class
 out/
@@ -16,6 +18,7 @@ scripts
 idea/**/
 .idea
 CS108_Project-tCHu.iml
+*.ps1
 
 # Log and annotations Files
 *.log
