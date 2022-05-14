@@ -13,7 +13,7 @@ import static java.lang.Integer.*;
  */
 public final class ClientMain extends Application {
 
-        private final static String DEFAULT_PROXY_NAME = "localhost";
+    private final static String DEFAULT_PROXY_NAME = "localhost";
     final static int LOCALHOST_PORT = 5108;
     private final String proxyName;
     private final int port;

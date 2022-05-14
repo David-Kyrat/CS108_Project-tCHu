@@ -13,18 +13,20 @@ out/**/*
 
 # Scripts and config Files
 scripts
+Tchu_Jar_Executable
 *.iml
 .idea/
 idea/**/
 .idea
 CS108_Project-tCHu.iml
-*.ps1
+*.wav
 
 # Log and annotations Files
 *.log
-ch\epfl\tchu\game\annotations.xml
+ch/epfl/tchu/game/annotations.xml
 
-# Package Files #
+# Package Files and files too big to be uploaded
+*.wav
 *.jar
 *.war
 *.nar
@@ -32,3 +34,6 @@ ch\epfl\tchu\game\annotations.xml
 *.zip
 *.tar.gz
 *.rar
+
+# Exception for the music files
+!/res/music/*.zip

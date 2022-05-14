@@ -1,0 +1,24 @@
+  /**
+     * 1. PublicCardState ;
+     *     1.1 faceUpCards List
+     *     1.2 deckSize int
+     *     1.3 discardSize int
+     *
+     * 2. PublicPlayerState ;
+     *     2.1 ticketCount int
+     *     2.2 cardCount int
+     *     2.3 routes list
+     *
+     * 3. PlayerState ;
+     *     3.1 tickets SB
+     *     3.2 cards SB
+     *     3.3 routes List
+     *
+     * 4. PublicGameState :
+     *     4.1 ticketsCount int
+     *     4.2 cardState PublicCardState
+     *     4.3 currentPlayerId PlayerId
+     *     4.4 playerState(Player1)  PublicPlayerState
+     *     4.5 playerState(Player2) PublicPlayerState
+     *     4.6 lastPlayer PlayerId
+     */

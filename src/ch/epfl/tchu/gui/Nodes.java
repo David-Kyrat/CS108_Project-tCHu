@@ -2,7 +2,6 @@ package ch.epfl.tchu.gui;
 
 import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.text.*;
@@ -23,7 +22,7 @@ final class Nodes {
 
     static <E extends Node> E withAction(E nodeToPerformActionOn, Consumer<E> actionPerformer) {
         actionPerformer.accept(nodeToPerformActionOn);
-        return nodeToPerformActionOn;
+        return  nodeToPerformActionOn;
     }
 
     /**
@@ -149,22 +148,6 @@ final class Nodes {
     }
 
     /**
-     * Creates an instance of VBox and set it Up with following parameters, centers it and adds the given children to it
-     * @param elementSpacing double
-     * @param pos            geometry.pos (enum)
-     * @param fillWidth      boolean
-     * @param children       Nodes to add to the VBox
-     * @return Vbox centered
-     */
-    public static VBox setUpNewVBox(double elementSpacing, Pos pos, boolean fillWidth, Node... children) {
-        VBox output = new VBox(elementSpacing);
-        output.setAlignment(pos);
-        output.setFillWidth(fillWidth);
-        output.getChildren().addAll(children);
-        return output;
-    }
-
-    /**
      * Creates an instance of VBox and set it Up with following parameters and centers it
      * @param elementSpacing double
      * @param pos            geometry.pos (enum)
@@ -175,22 +158,6 @@ final class Nodes {
         HBox output = new HBox(elementSpacing);
         output.setAlignment(pos);
         output.setFillHeight(fillHeight);
-        return output;
-    }
-
-    /**
-     * Creates an instance of VBox and set it Up with following parameters, centers it and adds the given children to it
-     * @param elementSpacing double
-     * @param pos            geometry.pos (enum)
-     * @param fillHeight     boolean
-     * @param children       Nodes to add to the HBox
-     * @return Hbox
-     */
-    public static HBox setUpNewHBox(double elementSpacing, Pos pos, boolean fillHeight, Node... children) {
-        HBox output = new HBox(elementSpacing);
-        output.setAlignment(pos);
-        output.setFillHeight(fillHeight);
-        output.getChildren().addAll(children);
         return output;
     }
 
@@ -215,9 +182,9 @@ final class Nodes {
     }
 
     /**
-     * @param message  String
-     * @param font     String
-     * @param color    Color
+     * @param message String
+     * @param font String
+     * @param color Color
      * @param fontsize int
      * @return new Text()
      */
@@ -229,10 +196,10 @@ final class Nodes {
     }
 
     /**
-     * @param message    String
-     * @param font       String
-     * @param color      Color
-     * @param fontsize   int
+     * @param message String
+     * @param font String
+     * @param color Color
+     * @param fontsize int
      * @param fontWeight FontWeight
      * @return new Text()
      */
@@ -245,41 +212,9 @@ final class Nodes {
     }
 
     /**
-     * @param message    String
-     * @param color      Color
-     * @param fontsize   int
-     * @param fontWeight FontWeight
-     * @return new Text()
-     */
-    public static Text newTxt(String message, Color color, int fontsize, FontWeight fontWeight) {
-        Text t1 = new Text(message);
-        styleTxt(t1, fontsize, fontWeight);
-        t1.setFill(color);
-        return t1;
-    }
-
-    /**
-     * @param message    String
-     * @param color      Color
-     * @param fontsize   int
-     * @param fontWeight FontWeight
-     * @param strokeWidth width of contour
-     * @param strokeColor color of contour
-     * @return new Text()
-     */
-    public static Text newTxt(String message, Color color, int fontsize, FontWeight fontWeight, double strokeWidth, Color strokeColor) {
-        Text t1 = new Text(message);
-        styleTxt(t1, fontsize, fontWeight);
-        t1.setFill(color);
-        t1.setStrokeWidth(strokeWidth);
-        t1.setStroke(strokeColor);
-        return t1;
-    }
-
-    /**
-     * @param t          Text
-     * @param font       String
-     * @param fontSize   int
+     * @param t Text
+     * @param font String
+     * @param fontSize int
      * @param fontWeight FontWeight
      */
     public static void styleTxt(Text t, String font, int fontSize, FontWeight fontWeight) {
@@ -287,28 +222,11 @@ final class Nodes {
     }
 
     /**
-     * @param t          Text
-     * @param fontSize   int
-     * @param fontWeight FontWeight
-     */
-    public static void styleTxt(Text t, int fontSize, FontWeight fontWeight) {
-        t.setFont(Font.font(t.getFont().getFamily(), fontWeight, FontPosture.REGULAR, fontSize));
-    }
-
-
-    /**
      * Adds debug css stylesheet to given sceen
      * @param scene sceen to add StyleSheet to
      */
     public static void addDebug(Scene scene) {
         scene.getStylesheets().add("debug.css");
-    }
-
-    public static ImageView createBackground(Stage stageToBoundImgSizeTo, String path) {
-        ImageView imageView = new ImageView(path);
-        imageView.fitHeightProperty().bind(stageToBoundImgSizeTo.heightProperty());
-        imageView.fitWidthProperty().bind(stageToBoundImgSizeTo.widthProperty());
-        return imageView;
     }
 
 }

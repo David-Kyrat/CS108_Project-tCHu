@@ -16,8 +16,8 @@ import javafx.util.Duration;
 
 import javax.sound.sampled.*;
 import javax.sound.sampled.spi.AudioFileReader;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 import java.util.function.*;
@@ -62,7 +62,8 @@ public class Menu extends Application {
         scene.getStylesheets().add("debug.css");
 
         try {
-            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File("res/music/professor-layton-the-toy-car-extended.wav"));
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(
+                    new BufferedInputStream(this.getClass().getResourceAsStream("/music/professor-layton-the-toy-car-extended.wav")));
             clip = AudioSystem.getClip();
             clip.open(audioInput);
         } catch (Exception e) {
