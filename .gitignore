@@ -2,8 +2,6 @@
 # Java.gitignore:
 
 # Specific Files
-TestTripsFromTicketText.txt
-asd
 Correct_FileArchitecture*.png
 
 # Compiled class and config Files
@@ -13,7 +11,7 @@ out/**/*
 
 # Scripts and config Files
 scripts
-Tchu_Jar_Executable
+#Tchu_Jar_Executable
 *.iml
 .idea/
 idea/**/
