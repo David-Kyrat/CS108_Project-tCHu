@@ -37,3 +37,6 @@ ch/epfl/tchu/game/annotations.xml
 
 # Exception for the music files
 !/res/music/*.zip
+
+.gradle
+old
