@@ -25,7 +25,8 @@
 
 - **Windows**: Download the executable from the release
 
-- **Linux:** 
+- **Linux**:  
+    If `unzip` isn't installed, install it.
 
     ```bash
     git clone https://github.com/David-Kyrat/CS108_Project-tCHu.git
