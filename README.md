@@ -11,8 +11,9 @@
 
 ## Game Screenshots
 
-![Menu](./res/screenshot1.png) 
-![Menu](./res/screenshot1.png) 
+<img src="./res/screenshot1.png" width="350"/>
+<img src="./res/screenshot1.png" width="350"/>
+
 
 
 <br>
