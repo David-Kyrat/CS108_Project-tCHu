@@ -41,6 +41,6 @@
 
 <br>
 
-> [!INFO]  
+> [!NOTE]  
 > <ins>NB:</ins>  
 > 1. An internet connection is required to properly get the fonts of the main-menu from google fonts
