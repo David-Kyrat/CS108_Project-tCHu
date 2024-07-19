@@ -23,8 +23,6 @@
 > [!TIP]
 > ### Rules: [Explanation & Rules (Wikipedia)](https://en.m.wikipedia.org/wiki/Ticket_to_Ride_(board_game))
 
-<br>
-
 ---
 
 ## Run the game
