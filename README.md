@@ -1,6 +1,6 @@
 # EPFL - CS-108 Project "tCHu"
  
-### *Board game based on "Ticket to ride"*
+### *Board game based on ["Ticket to ride"](https://en.m.wikipedia.org/wiki/Ticket_to_Ride_(board_game))*
 
  Made with:  
  ![Java](https://img.shields.io/badge/Java-≥11.0-%23ED8B00.svg?style=for-the-badge&logo=java&labelColor=FF7518&color=grey)
