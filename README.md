@@ -13,7 +13,6 @@
 
 <br>
 
----
 
 > [!TIP]
 > ### Rules: [Explanation & Rules (Wikipedia)](https://en.m.wikipedia.org/wiki/Ticket_to_Ride_(board_game))
@@ -22,11 +21,26 @@
 
 ---
 
+## Run the game
+
+- **Windows**: Download the executable from the release
+
+- **Linux:** 
+
+    ```bash
+    git clone https://github.com/David-Kyrat/CS108_Project-tCHu.git
+    cd CS108_Project-tCHu
+    make merge_split_jar
+    make run # Aftewards, only run this command to launch the game
+    ```
+
 <br>
 
-> [!IMPORTANT]
+> [!IMPORTANT]  
 > <ins>NB:</ins>  
 > 1. An internet connection is required to properly get the fonts of the main-menu from google fonts
 >  
-> 2. The music file was to big to be put on github so a compressed & split version was uploaded in the `res/music` directory. To regenerate it, you just need to to go in the `res/music` directory and unzip the `professor-layton-the-toy-car-extended.zip` archive with 7zip, winrar... like if it was a normal archive.
-( or just download the executable in the release. )
+> 2. The music file was to big to be put on github so a compressed & split
+>    version was uploaded in the `res/music` directory. To regenerate it, 
+> unzip the `professor-layton-the-toy-car-extended.zip` archive in the `res/music`
+> directory
