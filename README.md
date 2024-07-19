@@ -43,11 +43,6 @@
 
 <br>
 
-> [!IMPORTANT]  
+> [!INFO]  
 > <ins>NB:</ins>  
 > 1. An internet connection is required to properly get the fonts of the main-menu from google fonts
->  
-> 2. The music file was to big to be put on github so a compressed & split
->    version was uploaded in the `res/music` directory. To regenerate it, 
-> unzip the `professor-layton-the-toy-car-extended.zip` archive in the `res/music`
-> directory
