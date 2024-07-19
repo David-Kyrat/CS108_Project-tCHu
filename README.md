@@ -13,8 +13,10 @@
 
 <p align="center">
 <img src="./res/screenshot1.png" width="500"/>
-<img src="./res/screenshot2.png" width="500"/>
+<img src="./res/screenshot3.png" width="500"/>
 </p>
+
+<img src="./res/screenshot2.png"/>
 
 
 <br>
