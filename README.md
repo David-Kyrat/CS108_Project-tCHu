@@ -12,11 +12,11 @@
 ## Game Screenshots
 
 <p align="center">
-<img src="./res/screenshot1.png" width="500"/>
-<img src="./res/screenshot3.png" width="500"/>
+<img src="./res/screenshot1.png" width="500" height="400"/>
+<img src="./res/screenshot3.png" width="500" height="400"/>
 </p>
 
-<img src="./res/screenshot2.png"/>
+<img src="./res/screenshot2.png" width="1000" height="600"/>
 
 <br>
 
